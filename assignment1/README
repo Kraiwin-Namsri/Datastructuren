@@ -1,0 +1,12 @@
+# Maze Solver
+
+Deze opdracht implementeert een stack en queue op basis van een gegeven API.
+Ook is er een depth-first en breadth-first algoritme geimplementeerd.
+
+Bekijk *maze_solver.pdf* voor de originele opdracht.
+
+## Dependencies
+```
+check
+pkg-config
+```
