@@ -26,11 +26,11 @@ struct queue *queue_init(size_t capacity) {
   q->front = 0;
   q->rear = 0;
   q->length = 0;
-  q->capacity = capacity;
-  q->data = data;
   q->pushes = 0;
   q->pops = 0;
   q-> max_length = 0;
+  q->capacity = capacity;
+  q->data = data;
   return q;
 }
 
@@ -49,6 +49,8 @@ int queue_push(struct queue *q, int e) {
   q->pushes++;
   q->data[(q->rear++) % q->capacity] = e;
   q->length++;
+  if (q->length > q->max_length) 
+    q->max_length = q->length;
   return 0;
 }
 
