@@ -25,6 +25,8 @@ struct stack *stack_init(size_t capacity) {
   s->max_length = 0;
   s->data = data;
   s->capacity = capacity;
+  s->pops = 0;
+  s->pushes = 0;
   return s;
 }
 
