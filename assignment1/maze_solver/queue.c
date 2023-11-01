@@ -47,7 +47,7 @@ int queue_push(struct queue *q, int e) {
   if (!q) return 1;
   if (q->length >= q->capacity) return 1;
   q->pushes++;
-  q->data[(q->rear++) % q->capacity] = e;
+  q->data[(q->rear++) % q->capacity] = (unsigned int)e;
   q->length++;
   if (q->length > q->max_length) 
     q->max_length = q->length;
@@ -59,13 +59,13 @@ int queue_pop(struct queue *q) {
   if (!q->length) return -1;
   q->pops++;
   q->length--;
-  return q->data[q->front++ % q->capacity];
+  return (int)q->data[q->front++ % q->capacity];
 }
 
 int queue_peek(const struct queue *q) {
   if (!q) return -1;
   if (!q->length) return -1;
-  return q->data[q->front % q->capacity];
+  return (int)q->data[q->front % q->capacity];
 }
 
 int queue_empty(const struct queue *q) {

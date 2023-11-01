@@ -44,7 +44,7 @@ int stack_push(struct stack *s, int c) {
   if (s->length >= s->capacity) {
     return 1;
   }
-  s->data[s->length++] = c;
+  s->data[s->length++] = (unsigned int)c;
   if (s->length > s->max_length) {
     s->max_length = s->length;
   }
@@ -56,7 +56,7 @@ int stack_pop(struct stack *s) {
   if (!s) return -1;
   if (!s->length) return -1;
   s->pops++;
-  return s->data[--(s->length)];
+  return (int)s->data[--(s->length)];
 }
 
 int stack_peek(const struct stack *s) {
@@ -64,7 +64,7 @@ int stack_peek(const struct stack *s) {
   if (s->length == 0) {
     return -1;
   }
-  return s->data[s->length - 1];
+  return (int)s->data[s->length - 1];
 }
 
 int stack_empty(const struct stack *s) {
