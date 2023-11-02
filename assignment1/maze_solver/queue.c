@@ -35,11 +35,13 @@ struct queue *queue_init(size_t capacity) {
 }
 
 void queue_cleanup(struct queue *q) {
+  if (!q) return;
   free(q->data);
   free(q);
 }
 
 void queue_stats(const struct queue *q) {
+  if (!q) return;
   fprintf(stderr, "stats %lu %lu %lu", q->pushes, q->pops, q->max_length);
 }
 
@@ -74,5 +76,6 @@ int queue_empty(const struct queue *q) {
 }
 
 size_t queue_size(const struct queue *q) {
+  if (!q) return 0;
   return q->length;
 }
