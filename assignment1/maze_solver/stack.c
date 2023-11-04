@@ -38,7 +38,7 @@ void stack_cleanup(struct stack *s) {
 
 void stack_stats(const struct stack *s) {
   if (!s) return;
-  fprintf(stderr, "stats %lu %lu %lu", s->pushes, s->pops, s->max_length);
+  fprintf(stderr, "stats %lu %lu %lu\n", s->pushes, s->pops, s->max_length);
 }
 
 int stack_push(struct stack *s, int c) {
