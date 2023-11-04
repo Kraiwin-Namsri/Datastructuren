@@ -236,3 +236,8 @@ int maze_row(const struct maze *m, int index) {
 int maze_col(const struct maze *m, int index) {
     return index % m->n;
 }
+
+void maze_calculate_index(const struct maze *m, int index, int *row, int *col) {
+  *row = maze_row(m, index);
+  *col = maze_col(m, index);
+}

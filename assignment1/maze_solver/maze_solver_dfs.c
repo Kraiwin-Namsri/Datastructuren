@@ -9,10 +9,6 @@
 
 #define NOT_FOUND -1
 #define ERROR -2
-void maze_calculate_index(struct maze *m, int index, int *row, int *col) {
-  *row = maze_row(m, index);
-  *col = maze_col(m, index);
-}
 
 int traverse_path(struct maze *m, int *arr, int index) {
   int path_length = 0;
@@ -33,7 +29,7 @@ int traverse_path(struct maze *m, int *arr, int index) {
  *
  */
 int is_position_empty(struct maze *m, int r, int c) {
-  return maze_get(m, r, c) == ' ';
+  return maze_get(m, r, c) == FLOOR;
 }
 /* Find all indexes that are connect to the current index.
  * m: A pointer to a maze.
@@ -118,7 +114,6 @@ int dfs_solve(struct maze *m) {
   stack_cleanup(s);
   return NOT_FOUND;
 }
-
 
 int main(void) {
     /* read maze */
