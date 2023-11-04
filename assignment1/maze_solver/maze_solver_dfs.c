@@ -10,6 +10,11 @@
 #define NOT_FOUND -1
 #define ERROR -2
 
+void maze_calculate_index(struct maze *m, int index, int *row, int *col) {
+  *row = maze_row(m, index);
+  *col = maze_col(m, index);
+}
+
 int traverse_path(struct maze *m, int *arr, int index) {
   int path_length = 0;
   int i = index;

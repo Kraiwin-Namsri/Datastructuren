@@ -78,7 +78,4 @@ int maze_row(const struct maze *m, int index);
 /* Returns the column number of the 1d 'index'. */
 int maze_col(const struct maze *m, int index);
 
-/* Calculates the row and col given an index. */
-void maze_calculate_index(const struct maze *m, int index, int *row, int *col);
-
 #endif
