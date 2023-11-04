@@ -9,39 +9,31 @@
 
 #define NOT_FOUND -1
 #define ERROR -2
-int *init_traverse(size_t capacity) {
-  int *arr = malloc(capacity * sizeof(int));
-  if (!arr) return NULL;
-  for (size_t i = 0; i < capacity; i++) {
-    arr[i] = -1;
-  }
-  return arr;
+void maze_calculate_index(struct maze *m, int index, int *row, int *col) {
+  *row = maze_row(m, index);
+  *col = maze_col(m, index);
 }
 
 int traverse_path(struct maze *m, int *arr, int index) {
   int path_length = 0;
   int i = index;
-  char c = 'D';
-  int x, y;
+  int row, col;
   do {
     i = arr[i];
-    y = maze_row(m, i);
-    x = maze_col(m, i);
-    c = maze_get(m, y, x);  
-    if (c == ',') {
-      maze_set(m, y, x, 'X');
+    maze_calculate_index(m, i, &row, &col);
+    char c = maze_get(m, row, col);
+    if (c == VISITED) {
+      maze_set(m, row, col, PATH);
     }
     path_length++;
-    maze_print(m, false);
-  } while (!maze_at_start(m, y, x));
-  free(arr);
+  } while (!maze_at_start(m, row, col));
   return path_length;
 }
 /* Checks if the position is not visited yet and is visitable (not a wall).
  *
  */
 int is_position_empty(struct maze *m, int r, int c) {
-  return maze_get(m, r, c) == ' '; 
+  return maze_get(m, r, c) == ' ';
 }
 /* Find all indexes that are connect to the current index.
  * m: A pointer to a maze.
@@ -74,11 +66,17 @@ int find_paths(struct maze *m, int index, int *arr) {
   return amount_paths;
 }
 
+void set_maze_to_visit(struct maze *m, int row, int col) {
+  if (is_position_empty(m, row, col)) {
+    maze_set(m, row, col, TO_VISIT);
+  }
+}
+
 void set_maze_visited(struct maze *m, int index) {
-  int x = maze_col(m, index);
-  int y = maze_row(m, index);
-  if (is_position_empty(m, y, x)) {
-    maze_set(m, y, x, ',');
+  int row, col;
+  maze_calculate_index(m, index, &row, &col);
+  if (maze_get(m, row, col) == TO_VISIT) {
+    maze_set(m, row, col, VISITED);
   }
 }
 /* Solves the maze m.
@@ -86,41 +84,37 @@ void set_maze_visited(struct maze *m, int index) {
  * Returns NOT_FOUND if no path is found and ERROR if an error occured.
  */
 int dfs_solve(struct maze *m) {
+  // Initialize stack
   struct stack *s;
-  int x, y;
   size_t capacity = (size_t)maze_size(m);
   capacity = capacity * capacity;
   s = stack_init(capacity);
   if (!s) return ERROR;
-  int *traverse_arr = init_traverse(capacity);
-  if (!traverse_arr) {
-    stack_cleanup(s);
-    return ERROR;
-  }
-  maze_start(m, &y, &x);
-  stack_push(s, maze_index(m, y, x));
-  // printf("y: %d x: %d\n", y, x);
-  // traverse_arr[index] = index;
-  int index = 0;
-  int paths[4];
-  int amount_paths;
-  while (index != -1) {
-    index = stack_pop(s);
+  int traverse_arr[capacity];
+
+  int row, col;
+  maze_start(m, &row, &col);
+  stack_push(s, maze_index(m, row, col));
+  do {
+    int index = stack_pop(s);
     set_maze_visited(m, index);
+
+    int paths[4];
+    int amount_paths;
     amount_paths = find_paths(m, index, paths);
     if (amount_paths != 0) {
       for (int i = 0; i < amount_paths; i++) {
-        x = maze_col(m, paths[i]);
-        y = maze_row(m, paths[i]);
+        maze_calculate_index(m, paths[i], &row, &col);
         traverse_arr[paths[i]] = index;
-        if (maze_at_destination(m, y, x)) {
+        if (maze_at_destination(m, row, col)) {
           stack_cleanup(s);
           return traverse_path(m, traverse_arr, paths[i]);
         }
+        set_maze_to_visit(m, row, col);
         stack_push(s, paths[i]);
       }
     }
-  }
+  } while (!stack_empty(s));
   stack_cleanup(s);
   return NOT_FOUND;
 }
