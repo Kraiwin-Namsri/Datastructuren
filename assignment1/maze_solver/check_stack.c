@@ -136,7 +136,7 @@ END_TEST
 
 
 /* If you implement stack resizing (bonus) uncomment this test. */
-/*
+
 START_TEST(test_stack_realloc) {
     struct stack *s = stack_init(5);
     for (int i = 0; i < 15; i++) {
@@ -157,7 +157,7 @@ START_TEST(test_stack_realloc) {
     stack_cleanup(s);
 }
 END_TEST
-*/
+
 
 START_TEST(test_stack_underflow) {
     struct stack *s = stack_init(10);
@@ -242,10 +242,10 @@ Suite *stack_suite(void) {
 
     /* If you implement stack resizing (bonus) uncomment the test
      * 'test_stack_realloc' above and the lines below. */
-    // TCase *tc_bonus;
-    // tc_bonus = tcase_create("Bonus");
-    // tcase_add_test(tc_bonus, test_stack_realloc);
-    // suite_add_tcase(s, tc_bonus);
+    TCase *tc_bonus;
+    tc_bonus = tcase_create("Bonus");
+    tcase_add_test(tc_bonus, test_stack_realloc);
+    suite_add_tcase(s, tc_bonus);
 
     return s;
 }

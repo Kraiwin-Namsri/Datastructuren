@@ -11,7 +11,7 @@ struct stack {
   size_t pushes;
   size_t max_length;
   size_t capacity;
-  size_t original_capacity;
+  size_t resize_amount;
   unsigned int *data;
 };
 
@@ -26,21 +26,19 @@ struct stack *stack_init(size_t capacity) {
   s->length = 0;
   s->max_length = 0;
   s->data = data;
-  s->original_capacity = capacity;
+  s->resize_amount = capacity + 1;
   s->capacity = capacity;
   s->pops = 0;
   s->pushes = 0;
   return s;
 }
 int stack_resize(struct stack *s) {
-  unsigned int *data = malloc((s->capacity+s->original_capacity) * sizeof(unsigned int));
+  unsigned int *data = realloc(s->data, sizeof(unsigned int) * (s->capacity + s->resize_amount));
   if (!data){
     return 0;
   }
-  memcpy(data, s->data, s->capacity*sizeof(unsigned int));
-  free(s->data);
   s->data = data;
-  s->capacity += s->original_capacity;
+  s->capacity += s->resize_amount;
   return 1;
 }
 
