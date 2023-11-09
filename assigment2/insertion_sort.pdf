@@ -1,0 +1,1010 @@
+%PDF-1.4
+%“Œ‹ž ReportLab Generated PDF document http://www.reportlab.com
+1 0 obj
+<<
+/F1 2 0 R /F2 3 0 R /F3 4 0 R /F4 7 0 R
+>>
+endobj
+2 0 obj
+<<
+/BaseFont /Helvetica /Encoding /WinAnsiEncoding /Name /F1 /Subtype /Type1 /Type /Font
+>>
+endobj
+3 0 obj
+<<
+/BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding /Name /F2 /Subtype /Type1 /Type /Font
+>>
+endobj
+4 0 obj
+<<
+/BaseFont /Courier /Encoding /WinAnsiEncoding /Name /F3 /Subtype /Type1 /Type /Font
+>>
+endobj
+5 0 obj
+<<
+/Border [ 0 0 0 ] /Contents () /Dest [ 19 0 R /XYZ 68.69291 738.6772 0 ] /Rect [ 280.0029 578.4236 294.563 588.0236 ] /Subtype /Link /Type /Annot
+>>
+endobj
+6 0 obj
+<<
+/Border [ 0 0 0 ] /Contents () /Dest [ 19 0 R /XYZ 68.69291 726.6772 0 ] /Rect [ 174.4029 566.4236 178.8509 576.0236 ] /Subtype /Link /Type /Annot
+>>
+endobj
+7 0 obj
+<<
+/BaseFont /Helvetica-Oblique /Encoding /WinAnsiEncoding /Name /F4 /Subtype /Type1 /Type /Font
+>>
+endobj
+8 0 obj
+<<
+/Border [ 0 0 0 ] /Contents () /Dest [ 19 0 R /XYZ 68.69291 714.6772 0 ] /Rect [ 242.7629 536.4236 258.9799 546.0236 ] /Subtype /Link /Type /Annot
+>>
+endobj
+9 0 obj
+<<
+/Annots [ 5 0 R 6 0 R 8 0 R ] /Contents 28 0 R /MediaBox [ 0 0 595.2756 841.8898 ] /Parent 27 0 R /Resources <<
+/Font 1 0 R /ProcSet [ /PDF /Text /ImageB /ImageC /ImageI ]
+>> /Rotate 0 
+  /Trans <<
+
+>> /Type /Page
+>>
+endobj
+10 0 obj
+<<
+/Contents 29 0 R /MediaBox [ 0 0 595.2756 841.8898 ] /Parent 27 0 R /Resources <<
+/Font 1 0 R /ProcSet [ /PDF /Text /ImageB /ImageC /ImageI ]
+>> /Rotate 0 /Trans <<
+
+>> 
+  /Type /Page
+>>
+endobj
+11 0 obj
+<<
+/Border [ 0 0 0 ] /Contents () /Dest [ 9 0 R /XYZ 280.0029 587.0236 0 ] /Rect [ 68.69291 724.6772 74.25291 736.6772 ] /Subtype /Link /Type /Annot
+>>
+endobj
+12 0 obj
+<<
+/A <<
+/S /URI /Type /Action /URI (https://thoughtbot.com/blog/input-output-redirection-in-the-shell#standard-input)
+>> /Border [ 0 0 0 ] /Rect [ 153.7323 725.4272 501.6723 737.4272 ] /Subtype /Link /Type /Annot
+>>
+endobj
+13 0 obj
+<<
+/Border [ 0 0 0 ] /Contents () /Dest [ 9 0 R /XYZ 174.4029 575.0236 0 ] /Rect [ 68.69291 712.6772 74.25291 724.6772 ] /Subtype /Link /Type /Annot
+>>
+endobj
+14 0 obj
+<<
+/A <<
+/S /URI /Type /Action /URI (https://thoughtbot.com/blog/input-output-redirection-in-the-shell#redirecting-output)
+>> /Border [ 0 0 0 ] /Rect [ 153.7323 713.4272 515.5623 725.4272 ] /Subtype /Link /Type /Annot
+>>
+endobj
+15 0 obj
+<<
+/Border [ 0 0 0 ] /Contents () /Dest [ 9 0 R /XYZ 242.7629 545.0236 0 ] /Rect [ 68.69291 700.6772 74.25291 712.6772 ] /Subtype /Link /Type /Annot
+>>
+endobj
+16 0 obj
+<<
+/A <<
+/S /URI /Type /Action /URI (https://en.wikipedia.org/wiki/Insertion_sort)
+>> /Border [ 0 0 0 ] /Rect [ 153.7323 701.4272 338.8023 713.4272 ] /Subtype /Link /Type /Annot
+>>
+endobj
+17 0 obj
+<<
+/A <<
+/S /URI /Type /Action /URI (https://github.com/google/sanitizers/wiki/AddressSanitizer)
+>> /Border [ 0 0 0 ] /Rect [ 153.7323 689.4272 408.2723 701.4272 ] /Subtype /Link /Type /Annot
+>>
+endobj
+18 0 obj
+<<
+/A <<
+/S /URI /Type /Action /URI (http://valgrind.org/docs/manual/quick-start.html#quick-start.intro)
+>> /Border [ 0 0 0 ] /Rect [ 153.7323 677.4272 434.9423 689.4272 ] /Subtype /Link /Type /Annot
+>>
+endobj
+19 0 obj
+<<
+/Annots [ 11 0 R 12 0 R 13 0 R 14 0 R 15 0 R 16 0 R 17 0 R 18 0 R ] /Contents 30 0 R /MediaBox [ 0 0 595.2756 841.8898 ] /Parent 27 0 R /Resources <<
+/Font 1 0 R /ProcSet [ /PDF /Text /ImageB /ImageC /ImageI ]
+>> /Rotate 0 
+  /Trans <<
+
+>> /Type /Page
+>>
+endobj
+20 0 obj
+<<
+/Outlines 22 0 R /PageLabels 31 0 R /PageMode /UseNone /Pages 27 0 R /Type /Catalog
+>>
+endobj
+21 0 obj
+<<
+/Author () /CreationDate (D:20231108163114+00'00') /Creator (\(unspecified\)) /Keywords () /ModDate (D:20231108163114+00'00') /Producer (ReportLab PDF Library - www.reportlab.com) 
+  /Subject (\(unspecified\)) /Title (Assignment 2: mysort) /Trapped /False
+>>
+endobj
+22 0 obj
+<<
+/Count 4 /First 23 0 R /Last 26 0 R /Type /Outlines
+>>
+endobj
+23 0 obj
+<<
+/Dest [ 9 0 R /XYZ 62.69291 729.0236 0 ] /Next 24 0 R /Parent 22 0 R /Title (Objectives)
+>>
+endobj
+24 0 obj
+<<
+/Dest [ 9 0 R /XYZ 62.69291 678.0236 0 ] /Next 25 0 R /Parent 22 0 R /Prev 23 0 R /Title (Requirements)
+>>
+endobj
+25 0 obj
+<<
+/Dest [ 9 0 R /XYZ 62.69291 411.0236 0 ] /Next 26 0 R /Parent 22 0 R /Prev 24 0 R /Title (Getting started)
+>>
+endobj
+26 0 obj
+<<
+/Dest [ 9 0 R /XYZ 62.69291 144.0236 0 ] /Parent 22 0 R /Prev 25 0 R /Title (Grading)
+>>
+endobj
+27 0 obj
+<<
+/Count 3 /Kids [ 9 0 R 10 0 R 19 0 R ] /Type /Pages
+>>
+endobj
+28 0 obj
+<<
+/Length 8109
+>>
+stream
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+q
+1 0 0 1 62.69291 741.0236 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 4 Tm /F2 20 Tf 24 TL 129.9249 0 Td (Assignment 2: mysort) Tj T* -129.9249 0 Td ET
+Q
+Q
+q
+1 0 0 1 62.69291 708.0236 cm
+q
+BT 1 0 0 1 0 3.5 Tm 21 TL /F2 17.5 Tf 0 0 0 rg (Objectives) Tj T* ET
+Q
+Q
+q
+1 0 0 1 62.69291 690.0236 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F1 10 Tf 12 TL (You must implement a list API and a number sorting program with several command-line options.) Tj T* ET
+Q
+Q
+q
+1 0 0 1 62.69291 657.0236 cm
+q
+BT 1 0 0 1 0 3.5 Tm 21 TL /F2 17.5 Tf 0 0 0 rg (Requirements) Tj T* ET
+Q
+Q
+q
+1 0 0 1 62.69291 639.0236 cm
+q
+BT 1 0 0 1 0 2 Tm 12 TL /F1 10 Tf 0 0 0 rg (Your sorting program must be named ) Tj /F3 10 Tf (mysort) Tj /F1 10 Tf ( and its basic operation is as follows:) Tj T* ET
+Q
+Q
+q
+1 0 0 1 62.69291 633.0236 cm
+Q
+q
+1 0 0 1 62.69291 633.0236 cm
+Q
+q
+1 0 0 1 62.69291 621.0236 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+q
+1 0 0 1 6 -3 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F1 10 Tf 12 TL 10.5 0 Td (\177) Tj T* -10.5 0 Td ET
+Q
+Q
+q
+1 0 0 1 23 -3 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F1 10 Tf 12 TL (it reads zero or more numbers from standard input;) Tj T* ET
+Q
+Q
+q
+Q
+Q
+q
+1 0 0 1 62.69291 615.0236 cm
+Q
+q
+1 0 0 1 62.69291 603.0236 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+q
+1 0 0 1 6 -3 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F1 10 Tf 12 TL 10.5 0 Td (\177) Tj T* -10.5 0 Td ET
+Q
+Q
+q
+1 0 0 1 23 -3 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F1 10 Tf 12 TL (it prints the same numbers in sorted order on its standard output, one number per line.) Tj T* ET
+Q
+Q
+q
+Q
+Q
+q
+1 0 0 1 62.69291 603.0236 cm
+Q
+q
+1 0 0 1 62.69291 561.0236 cm
+q
+BT 1 0 0 1 0 26 Tm .013984 Tw 12 TL /F1 10 Tf 0 0 0 rg (Numbers in the input are non-negative and separated by any whitespace, including newlines. You can test) Tj T* 0 Tw 1.123567 Tw (your program by typing your input in the terminal ) Tj /F1 8 Tf 0 0 .501961 rg 5 Ts (1) Tj /F1 10 Tf 0 0 0 rg 0 Ts (, or you can use bash input redirection to send your) Tj T* 0 Tw (program a whole text file ) Tj /F1 8 Tf 0 0 .501961 rg 5 Ts (2) Tj /F1 10 Tf 0 0 0 rg 0 Ts (.) Tj T* ET
+Q
+Q
+q
+1 0 0 1 62.69291 519.0236 cm
+q
+BT 1 0 0 1 0 26 Tm 2.899985 Tw 12 TL /F1 10 Tf 0 0 0 rg (While reading the input, your program must sort by maintaining a linked list in memory. It should) Tj T* 0 Tw 1.68128 Tw (implement a version of the insertion sort ) Tj /F1 8 Tf 0 0 .501961 rg 5 Ts (3) Tj /F1 10 Tf 0 0 0 rg 0 Ts ( algorithm to do this, but ) Tj /F4 10 Tf (some careful consideration of the) Tj T* 0 Tw (problem might help you avoid implementing that complete algorithm on your linked list) Tj /F1 10 Tf (.) Tj T* ET
+Q
+Q
+q
+1 0 0 1 62.69291 453.0236 cm
+q
+BT 1 0 0 1 0 50 Tm 1.831318 Tw 12 TL /F1 10 Tf 0 0 0 rg (Your program should take several command-line options that modify the sorted list. You can find the) Tj T* 0 Tw 3.128651 Tw (complete list of options in the ) Tj /F2 10 Tf (Grading) Tj /F1 10 Tf ( section. We provide the code to parse the command-line) Tj T* 0 Tw .373984 Tw (arguments with the ) Tj /F3 10 Tf (getopt) Tj /F1 10 Tf ( function in ) Tj /F3 10 Tf (main.c) Tj /F1 10 Tf (. For the complete description of ) Tj /F3 10 Tf (getopt) Tj /F1 10 Tf ( you can consult) Tj T* 0 Tw .878221 Tw (the manual pages using the command ) Tj /F3 10 Tf (man) Tj ( ) Tj (3) Tj ( ) Tj (getopt) Tj /F1 10 Tf ( in the terminal. Other useful man pages for this) Tj T* 0 Tw (assignment include ) Tj /F3 10 Tf (fgets) Tj /F1 10 Tf (, ) Tj /F3 10 Tf (strtol) Tj /F1 10 Tf ( and ) Tj /F3 10 Tf (strtok) Tj /F1 10 Tf (.) Tj T* ET
+Q
+Q
+q
+1 0 0 1 62.69291 423.0236 cm
+q
+BT 1 0 0 1 0 14 Tm 2.429985 Tw 12 TL /F1 10 Tf 0 0 0 rg (You must submit your work as a tarball. The command ) Tj /F3 10 Tf (make) Tj ( ) Tj (tarball) Tj /F1 10 Tf ( will create a tarball called) Tj T* 0 Tw /F3 10 Tf (insertion_sort_submit.tar.gz) Tj /F1 10 Tf ( containing the relevant files.) Tj T* ET
+Q
+Q
+q
+1 0 0 1 62.69291 390.0236 cm
+q
+BT 1 0 0 1 0 3.5 Tm 21 TL /F2 17.5 Tf 0 0 0 rg (Getting started) Tj T* ET
+Q
+Q
+q
+1 0 0 1 62.69291 378.0236 cm
+Q
+q
+1 0 0 1 62.69291 378.0236 cm
+Q
+q
+1 0 0 1 62.69291 354.0236 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+q
+1 0 0 1 6 9 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F1 10 Tf 12 TL 5.66 0 Td (1.) Tj T* -5.66 0 Td ET
+Q
+Q
+q
+1 0 0 1 23 -3 cm
+q
+BT 1 0 0 1 0 14 Tm .70311 Tw 12 TL /F1 10 Tf 0 0 0 rg (Read all the function prototypes and descriptions in ) Tj /F3 10 Tf (list.h) Tj /F1 10 Tf (. Decide on what type of ) Tj /F4 10 Tf (linked list) Tj /F1 10 Tf ( you) Tj T* 0 Tw (will create and draw representations of your intended ) Tj /F4 10 Tf (list) Tj /F1 10 Tf ( and ) Tj /F4 10 Tf (node) Tj /F1 10 Tf ( structs on paper.) Tj T* ET
+Q
+Q
+q
+Q
+Q
+q
+1 0 0 1 62.69291 348.0236 cm
+Q
+q
+1 0 0 1 62.69291 312.0236 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+q
+1 0 0 1 6 21 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F1 10 Tf 12 TL 5.66 0 Td (2.) Tj T* -5.66 0 Td ET
+Q
+Q
+q
+1 0 0 1 23 -3 cm
+q
+BT 1 0 0 1 0 26 Tm .019984 Tw 12 TL /F1 10 Tf 0 0 0 rg (Implement the function prototypes from ) Tj /F3 10 Tf (list.h) Tj /F1 10 Tf ( in ) Tj /F3 10 Tf (list.c) Tj /F1 10 Tf ( in their given order and run ) Tj /F3 10 Tf (make) Tj ( ) Tj (check) Tj /F1 10 Tf  T* 0 Tw .814651 Tw (after completing every function. If you think you have implemented enough functions to pass a test) Tj T* 0 Tw (and the test still fails, fix the problem before moving on to the next set of functions.) Tj T* ET
+Q
+Q
+q
+Q
+Q
+q
+1 0 0 1 62.69291 306.0236 cm
+Q
+q
+1 0 0 1 62.69291 270.0236 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+q
+1 0 0 1 6 21 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F1 10 Tf 12 TL 5.66 0 Td (3.) Tj T* -5.66 0 Td ET
+Q
+Q
+q
+1 0 0 1 23 -3 cm
+q
+BT 1 0 0 1 0 26 Tm 2.122651 Tw 12 TL /F1 10 Tf 0 0 0 rg (Start with the processing of a simplified version of the input description in ) Tj /F3 10 Tf (main.c) Tj /F1 10 Tf (. Only parse) Tj T* 0 Tw -0.06814 Tw (numbers separated by newlines, and do not consider multiple numbers on the same line just yet. Sort) Tj T* 0 Tw (the input numbers using your linked list implementation and print them in the specified output format.) Tj T* ET
+Q
+Q
+q
+Q
+Q
+q
+1 0 0 1 62.69291 264.0236 cm
+Q
+q
+1 0 0 1 62.69291 240.0236 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+q
+1 0 0 1 6 9 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F1 10 Tf 12 TL 5.66 0 Td (4.) Tj T* -5.66 0 Td ET
+Q
+Q
+q
+1 0 0 1 23 -3 cm
+q
+BT 1 0 0 1 0 14 Tm 1.519984 Tw 12 TL /F1 10 Tf 0 0 0 rg (Add the code to parse the complete input description and combine this with your existing sorting) Tj T* 0 Tw (code. Run ) Tj /F3 10 Tf (make) Tj ( ) Tj (check) Tj /F1 10 Tf ( and ensure that your code passes all sorting tests.) Tj T* ET
+Q
+Q
+q
+Q
+Q
+q
+1 0 0 1 62.69291 234.0236 cm
+Q
+q
+1 0 0 1 62.69291 198.0236 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+q
+1 0 0 1 6 21 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F1 10 Tf 12 TL 5.66 0 Td (5.) Tj T* -5.66 0 Td ET
+Q
+Q
+q
+1 0 0 1 23 -3 cm
+q
+BT 1 0 0 1 0 26 Tm 1.00284 Tw 12 TL /F1 10 Tf 0 0 0 rg (Reread all the function descriptions in ) Tj /F3 10 Tf (list.h) Tj /F1 10 Tf ( and verify that you implemented all these functions) Tj T* 0 Tw .853984 Tw (correctly. Carefully consider all edge case inputs for your functions and ensure you handle them in) Tj T* 0 Tw (your implementation \(i.e. they should not crash or break the program\).) Tj T* ET
+Q
+Q
+q
+Q
+Q
+q
+1 0 0 1 62.69291 192.0236 cm
+Q
+q
+1 0 0 1 62.69291 156.0236 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+q
+1 0 0 1 6 21 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F1 10 Tf 12 TL 5.66 0 Td (6.) Tj T* -5.66 0 Td ET
+Q
+Q
+q
+1 0 0 1 23 -3 cm
+q
+BT 1 0 0 1 0 26 Tm 1.319985 Tw 12 TL /F1 10 Tf 0 0 0 rg (Implement the option flags described in the grading section. A flag on the command line sets the) Tj T* 0 Tw 3.129984 Tw (related variable in the ) Tj /F3 10 Tf (config) Tj /F1 10 Tf ( struct to ) Tj /F3 10 Tf (1) Tj /F1 10 Tf (. Check this struct and modify the program output) Tj T* 0 Tw (accordingly.) Tj T* ET
+Q
+Q
+q
+Q
+Q
+q
+1 0 0 1 62.69291 156.0236 cm
+Q
+q
+1 0 0 1 62.69291 123.0236 cm
+q
+BT 1 0 0 1 0 3.5 Tm 21 TL /F2 17.5 Tf 0 0 0 rg (Grading) Tj T* ET
+Q
+Q
+q
+1 0 0 1 62.69291 105.0236 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F1 10 Tf 12 TL (Your grade starts from 0, and the following tests determine your grade:) Tj T* ET
+Q
+Q
+q
+1 0 0 1 62.69291 99.02362 cm
+Q
+q
+1 0 0 1 62.69291 99.02362 cm
+Q
+ 
+endstream
+endobj
+29 0 obj
+<<
+/Length 7855
+>>
+stream
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+q
+1 0 0 1 62.69291 741.0236 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+q
+1 0 0 1 6 9 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F1 10 Tf 12 TL 10.5 0 Td (\177) Tj T* -10.5 0 Td ET
+Q
+Q
+q
+1 0 0 1 23 -3 cm
+q
+BT 1 0 0 1 0 14 Tm 2.361654 Tw 12 TL /F1 10 Tf 0 0 0 rg (+2pt if you have submitted an archive in the right format, and you have made a real effort to) Tj T* 0 Tw (implement to implement ) Tj /F3 10 Tf (list.c) Tj /F1 10 Tf ( and ) Tj /F3 10 Tf (main.c) Tj /F1 10 Tf (.) Tj T* ET
+Q
+Q
+q
+Q
+Q
+q
+1 0 0 1 62.69291 735.0236 cm
+Q
+q
+1 0 0 1 62.69291 711.0236 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+q
+1 0 0 1 6 9 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F1 10 Tf 12 TL 10.5 0 Td (\177) Tj T* -10.5 0 Td ET
+Q
+Q
+q
+1 0 0 1 23 -3 cm
+q
+BT 1 0 0 1 0 14 Tm 1.93784 Tw 12 TL /F1 10 Tf 0 0 0 rg (+2pt if your list correctly implements all described functions in ) Tj /F3 10 Tf (list.h) Tj /F1 10 Tf ( and also handles invalid) Tj T* 0 Tw (operations such as invalid inserts and invalid unlinks correctly.) Tj T* ET
+Q
+Q
+q
+Q
+Q
+q
+1 0 0 1 62.69291 705.0236 cm
+Q
+q
+1 0 0 1 62.69291 681.0236 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+q
+1 0 0 1 6 9 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F1 10 Tf 12 TL 10.5 0 Td (\177) Tj T* -10.5 0 Td ET
+Q
+Q
+q
+1 0 0 1 23 -3 cm
+q
+BT 1 0 0 1 0 14 Tm 2.99998 Tw 12 TL /F1 10 Tf 0 0 0 rg (+2.5pt if your ) Tj /F3 10 Tf (mysort) Tj /F1 10 Tf ( correctly processes any input meeting the described requirements and) Tj T* 0 Tw (produces output in sorted order according to the specified format.) Tj T* ET
+Q
+Q
+q
+Q
+Q
+q
+1 0 0 1 62.69291 675.0236 cm
+Q
+q
+1 0 0 1 62.69291 651.0236 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+q
+1 0 0 1 6 9 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F1 10 Tf 12 TL 10.5 0 Td (\177) Tj T* -10.5 0 Td ET
+Q
+Q
+q
+1 0 0 1 23 -3 cm
+q
+BT 1 0 0 1 0 14 Tm 2.220751 Tw 12 TL /F1 10 Tf 0 0 0 rg (-1pt if your code produces any warnings using the flags ) Tj /F3 10 Tf (-Wpedantic) Tj ( ) Tj (-Wall -Wextra) Tj /F1 10 Tf ( when) Tj T* 0 Tw (compiling.) Tj T* ET
+Q
+Q
+q
+Q
+Q
+q
+1 0 0 1 62.69291 651.0236 cm
+Q
+q
+1 0 0 1 62.69291 621.0236 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 14 Tm /F1 10 Tf 12 TL .501235 Tw (The provided tests only partially check the following features. You will have to validate the correctness of) Tj T* 0 Tw (these features yourself by writing your own tests.) Tj T* ET
+Q
+Q
+q
+1 0 0 1 62.69291 615.0236 cm
+Q
+q
+1 0 0 1 62.69291 615.0236 cm
+Q
+q
+1 0 0 1 62.69291 591.0236 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+q
+1 0 0 1 6 9 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F1 10 Tf 12 TL 10.5 0 Td (\177) Tj T* -10.5 0 Td ET
+Q
+Q
+q
+1 0 0 1 23 -3 cm
+q
+BT 1 0 0 1 0 14 Tm 1.39332 Tw 12 TL /F1 10 Tf 0 0 0 rg (+0.5pt if your ) Tj /F3 10 Tf (mysort) Tj /F1 10 Tf ( supports the option ) Tj /F3 10 Tf (-d) Tj /F1 10 Tf (, which causes the values in the list to be sorted in) Tj T* 0 Tw (descending order.) Tj T* ET
+Q
+Q
+q
+Q
+Q
+q
+1 0 0 1 62.69291 585.0236 cm
+Q
+q
+1 0 0 1 62.69291 491.8236 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+q
+1 0 0 1 6 78.2 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F1 10 Tf 12 TL 10.5 0 Td (\177) Tj T* -10.5 0 Td ET
+Q
+Q
+q
+1 0 0 1 23 66.2 cm
+q
+BT 1 0 0 1 0 14 Tm .898876 Tw 12 TL /F1 10 Tf 0 0 0 rg (+0.5pt if your ) Tj /F3 10 Tf (mysort) Tj /F1 10 Tf ( supports the option ) Tj /F3 10 Tf (-c) Tj /F1 10 Tf ( which causes the sorted list values to be added in a) Tj T* 0 Tw (pair-wise manner as shown in this example:) Tj T* ET
+Q
+Q
+q
+1 0 0 1 23 -3 cm
+q
+q
+1 0 0 1 0 0 cm
+q
+1 0 0 1 6.6 6.6 cm
+q
+.662745 .662745 .662745 RG
+.5 w
+.960784 .960784 .862745 rg
+n -6 -6 445.6898 60 re B*
+Q
+q
+0 0 0 rg
+BT 1 0 0 1 0 38 Tm /F3 10 Tf 12 TL ($ echo "5 4 3 2 1" | ./mysort -c) Tj T* (3) Tj T* (7) Tj T* (5) Tj T* ET
+Q
+Q
+Q
+Q
+Q
+q
+Q
+Q
+q
+1 0 0 1 62.69291 485.8236 cm
+Q
+q
+1 0 0 1 62.69291 461.8236 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+q
+1 0 0 1 6 9 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F1 10 Tf 12 TL 10.5 0 Td (\177) Tj T* -10.5 0 Td ET
+Q
+Q
+q
+1 0 0 1 23 -3 cm
+q
+BT 1 0 0 1 0 14 Tm -0.063765 Tw 12 TL /F1 10 Tf 0 0 0 rg (+0.5pt if your ) Tj /F3 10 Tf (mysort) Tj /F1 10 Tf ( supports the option ) Tj /F3 10 Tf (-o) Tj /F1 10 Tf (, which removes all odd valued numbers from the sorted) Tj T* 0 Tw (list.) Tj T* ET
+Q
+Q
+q
+Q
+Q
+q
+1 0 0 1 62.69291 455.8236 cm
+Q
+q
+1 0 0 1 62.69291 302.6236 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+q
+1 0 0 1 6 138.2 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F1 10 Tf 12 TL 10.5 0 Td (\177) Tj T* -10.5 0 Td ET
+Q
+Q
+q
+1 0 0 1 23 90.2 cm
+q
+BT 1 0 0 1 0 50 Tm .929987 Tw 12 TL /F1 10 Tf 0 0 0 rg (+0.5pt if your ) Tj /F3 10 Tf (mysort) Tj /F1 10 Tf ( supports the option ) Tj /F3 10 Tf (-z) Tj /F1 10 Tf ( which causes the sorted list to be cut into two equal) Tj T* 0 Tw 1.69832 Tw (halves \(with the first half being longer in case of odd length\) and then zips the two halves back) Tj T* 0 Tw .926651 Tw (together, starting with the first element of the first half and then alternating between elements from) Tj T* 0 Tw .94881 Tw (the second and first half until all elements have been joined back into the single list. This example) Tj T* 0 Tw (shows the output for a simple example:) Tj T* ET
+Q
+Q
+q
+1 0 0 1 23 -3 cm
+q
+q
+1 0 0 1 0 0 cm
+q
+1 0 0 1 6.6 6.6 cm
+q
+.662745 .662745 .662745 RG
+.5 w
+.960784 .960784 .862745 rg
+n -6 -6 445.6898 84 re B*
+Q
+q
+0 0 0 rg
+BT 1 0 0 1 0 62 Tm /F3 10 Tf 12 TL ($ echo "5 4 3 2 1" | ./mysort -z) Tj T* (1) Tj T* (4) Tj T* (2) Tj T* (5) Tj T* (3) Tj T* ET
+Q
+Q
+Q
+Q
+Q
+q
+Q
+Q
+q
+1 0 0 1 62.69291 296.6236 cm
+Q
+q
+1 0 0 1 62.69291 284.6236 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+q
+1 0 0 1 6 -3 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F1 10 Tf 12 TL 10.5 0 Td (\177) Tj T* -10.5 0 Td ET
+Q
+Q
+q
+1 0 0 1 23 -3 cm
+q
+BT 1 0 0 1 0 2 Tm 12 TL /F1 10 Tf 0 0 0 rg (+0.5pt if your ) Tj /F3 10 Tf (mysort) Tj /F1 10 Tf ( handles interactions between the flags correctly.) Tj T* ET
+Q
+Q
+q
+Q
+Q
+q
+1 0 0 1 62.69291 278.6236 cm
+Q
+q
+1 0 0 1 62.69291 266.6236 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+q
+1 0 0 1 6 -3 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F1 10 Tf 12 TL 10.5 0 Td (\177) Tj T* -10.5 0 Td ET
+Q
+Q
+q
+1 0 0 1 23 -3 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F1 10 Tf 12 TL (+1pt If your implementation has the correct style violations and the correct complexity.) Tj T* ET
+Q
+Q
+q
+Q
+Q
+q
+1 0 0 1 62.69291 260.6236 cm
+Q
+q
+1 0 0 1 62.69291 248.6236 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+q
+1 0 0 1 6 -3 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F1 10 Tf 12 TL 10.5 0 Td (\177) Tj T* -10.5 0 Td ET
+Q
+Q
+q
+1 0 0 1 23 -3 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F1 10 Tf 12 TL (-0.5pt if your program misbehaves on zero-sized inputs.) Tj T* ET
+Q
+Q
+q
+Q
+Q
+q
+1 0 0 1 62.69291 242.6236 cm
+Q
+q
+1 0 0 1 62.69291 230.6236 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+q
+1 0 0 1 6 -3 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F1 10 Tf 12 TL 10.5 0 Td (\177) Tj T* -10.5 0 Td ET
+Q
+Q
+q
+1 0 0 1 23 -3 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F1 10 Tf 12 TL (-0.5pt if your program misbehaves when the last line does not terminate with a newline character.) Tj T* ET
+Q
+Q
+q
+Q
+Q
+q
+1 0 0 1 62.69291 224.6236 cm
+Q
+q
+1 0 0 1 62.69291 212.6236 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+q
+1 0 0 1 6 -3 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F1 10 Tf 12 TL 10.5 0 Td (\177) Tj T* -10.5 0 Td ET
+Q
+Q
+q
+1 0 0 1 23 -3 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F1 10 Tf 12 TL (-1pt if your program does not correctly handle out-of-memory situations.) Tj T* ET
+Q
+Q
+q
+Q
+Q
+q
+1 0 0 1 62.69291 212.6236 cm
+Q
+q
+1 0 0 1 62.69291 146.6236 cm
+q
+BT 1 0 0 1 0 50 Tm 1.254692 Tw 12 TL /F1 10 Tf 0 0 0 rg (Your program should also be able to handle combinations of these options in the same order they are) Tj T* 0 Tw 1.78686 Tw (described here, e.g. ) Tj /F4 10 Tf (-c) Tj /F1 10 Tf ( always happens before ) Tj /F4 10 Tf (-z) Tj /F1 10 Tf (. The list is first sorted \(in ascending or descending) Tj T* 0 Tw 1.057633 Tw (order\), and then all options are applied in the above order. With any combination of options, the output) Tj T* 0 Tw -0.120014 Tw (should still be produced only once after all the options have been applied, according to the specified output) Tj T* 0 Tw (format.) Tj T* ET
+Q
+Q
+q
+1 0 0 1 62.69291 89.93071 cm
+Q
+ 
+endstream
+endobj
+30 0 obj
+<<
+/Length 1652
+>>
+stream
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+q
+1 0 0 1 62.69291 736.6772 cm
+n 0 14.17323 m 469.8898 14.17323 l S
+Q
+q
+1 0 0 1 62.69291 724.6772 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+q
+1 0 0 1 6 0 cm
+q
+BT 1 0 0 1 0 2 Tm 12 TL /F1 10 Tf 0 0 .501961 rg (1) Tj T* ET
+Q
+Q
+q
+1 0 0 1 91.03937 0 cm
+q
+0 0 .501961 rg
+BT 1 0 0 1 0 2 Tm /F1 10 Tf 12 TL (https://thoughtbot.com/blog/input-output-redirection-in-the-shell#standard-input) Tj T* ET
+Q
+Q
+q
+Q
+Q
+q
+1 0 0 1 62.69291 712.6772 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+q
+1 0 0 1 6 0 cm
+q
+BT 1 0 0 1 0 2 Tm 12 TL /F1 10 Tf 0 0 .501961 rg (2) Tj T* ET
+Q
+Q
+q
+1 0 0 1 91.03937 0 cm
+q
+0 0 .501961 rg
+BT 1 0 0 1 0 2 Tm /F1 10 Tf 12 TL (https://thoughtbot.com/blog/input-output-redirection-in-the-shell#redirecting-output) Tj T* ET
+Q
+Q
+q
+Q
+Q
+q
+1 0 0 1 62.69291 700.6772 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+q
+1 0 0 1 6 0 cm
+q
+BT 1 0 0 1 0 2 Tm 12 TL /F1 10 Tf 0 0 .501961 rg (3) Tj T* ET
+Q
+Q
+q
+1 0 0 1 91.03937 0 cm
+q
+0 0 .501961 rg
+BT 1 0 0 1 0 2 Tm /F1 10 Tf 12 TL (https://en.wikipedia.org/wiki/Insertion_sort) Tj T* ET
+Q
+Q
+q
+Q
+Q
+q
+1 0 0 1 62.69291 688.6772 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+q
+1 0 0 1 6 0 cm
+q
+BT 1 0 0 1 0 2 Tm 12 TL /F1 10 Tf 0 0 0 rg (4) Tj T* ET
+Q
+Q
+q
+1 0 0 1 91.03937 0 cm
+q
+0 0 .501961 rg
+BT 1 0 0 1 0 2 Tm /F1 10 Tf 12 TL (https://github.com/google/sanitizers/wiki/AddressSanitizer) Tj T* ET
+Q
+Q
+q
+Q
+Q
+q
+1 0 0 1 62.69291 676.6772 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+q
+1 0 0 1 6 0 cm
+q
+BT 1 0 0 1 0 2 Tm 12 TL /F1 10 Tf 0 0 0 rg (5) Tj T* ET
+Q
+Q
+q
+1 0 0 1 91.03937 0 cm
+q
+0 0 .501961 rg
+BT 1 0 0 1 0 2 Tm /F1 10 Tf 12 TL (http://valgrind.org/docs/manual/quick-start.html#quick-start.intro) Tj T* ET
+Q
+Q
+q
+Q
+Q
+ 
+endstream
+endobj
+31 0 obj
+<<
+/Nums [ 0 32 0 R 1 33 0 R 2 34 0 R ]
+>>
+endobj
+32 0 obj
+<<
+/S /D /St 1
+>>
+endobj
+33 0 obj
+<<
+/S /D /St 2
+>>
+endobj
+34 0 obj
+<<
+/S /D /St 3
+>>
+endobj
+xref
+0 35
+0000000000 65535 f 
+0000000073 00000 n 
+0000000134 00000 n 
+0000000241 00000 n 
+0000000353 00000 n 
+0000000458 00000 n 
+0000000625 00000 n 
+0000000793 00000 n 
+0000000908 00000 n 
+0000001076 00000 n 
+0000001311 00000 n 
+0000001517 00000 n 
+0000001685 00000 n 
+0000001918 00000 n 
+0000002086 00000 n 
+0000002323 00000 n 
+0000002491 00000 n 
+0000002688 00000 n 
+0000002899 00000 n 
+0000003118 00000 n 
+0000003392 00000 n 
+0000003498 00000 n 
+0000003776 00000 n 
+0000003850 00000 n 
+0000003961 00000 n 
+0000004087 00000 n 
+0000004216 00000 n 
+0000004324 00000 n 
+0000004398 00000 n 
+0000012559 00000 n 
+0000020466 00000 n 
+0000022170 00000 n 
+0000022229 00000 n 
+0000022263 00000 n 
+0000022297 00000 n 
+trailer
+<<
+/ID 
+[<43dcc2c4a8381836d55f2ebdebd3a9c5><43dcc2c4a8381836d55f2ebdebd3a9c5>]
+% ReportLab generated PDF document -- digest (http://www.reportlab.com)
+
+/Info 21 0 R
+/Root 20 0 R
+/Size 35
+>>
+startxref
+22331
+%%EOF
