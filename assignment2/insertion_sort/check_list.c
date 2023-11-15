@@ -21,6 +21,11 @@ START_TEST(test_list_init) {
     ck_assert_int_eq(list_cleanup(l), 0);
 }
 END_TEST
+START_TEST(test_free_node) {
+  struct node *n = list_new_node(5);
+  ck_assert_ptr_nonnull(n);
+  list_free_node(n);
+}
 
 /* test add & head */
 START_TEST(test_add_front) {
@@ -32,7 +37,6 @@ START_TEST(test_add_front) {
 
     struct node *m = list_head(l);
     ck_assert_ptr_eq(m, n);
-
     list_cleanup(l);
 }
 END_TEST
@@ -231,6 +235,7 @@ Suite *list_suite(void) {
     tc_core = tcase_create("Core");
 
     tcase_add_test(tc_core, test_list_init);
+    tcase_add_test(tc_core, test_free_node);
     tcase_add_test(tc_core, test_add_front);
     tcase_add_test(tc_core, test_next_multiple);
     tcase_add_test(tc_core, test_add_back);
