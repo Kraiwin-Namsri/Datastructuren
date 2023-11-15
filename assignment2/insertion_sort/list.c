@@ -193,7 +193,7 @@ struct node *list_get_ith(const struct list *l, size_t i) {
   if (!l)
     return 0;
   struct node *n = l->first;
-  for (int j = 0; j < i; j++) {
+  for (size_t j = 0; j < i; j++) {
     if (!n)
       return NULL;
     n = n->next;
