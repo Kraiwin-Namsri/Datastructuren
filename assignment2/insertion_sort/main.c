@@ -1,3 +1,4 @@
+#include <check.h>
 #include <getopt.h>
 #include <math.h>
 #include <stddef.h>
@@ -88,7 +89,6 @@ int parse_input(struct list *l, char *buf) {
   while (token) {
     long n;
     int status = parse_token(token, &n);
-    // printf("stat: %d n: %ld\n", status, n);
     if(status) {
       break;
     }
@@ -137,7 +137,7 @@ void sort_list(struct list *l, int descending_order) {
 }
 void combine(struct list *l) {
   size_t len = list_length(l);
-  for (size_t i = 0; i+1 < len; i++) {
+  for (size_t i = 0; i < len; i++) {
     struct node *n_1 = list_get_ith(l, i);
     struct node *n_2 = list_get_ith(l, i + 1);
     list_node_set_value(n_1, list_node_get_value(n_1) + list_node_get_value(n_2));
@@ -152,22 +152,27 @@ void remove_odd(struct list *l) {
     if ((list_node_get_value(n) % 2)) {
       list_unlink_node(l, n);
       list_free_node(n);
+      len--;
+      i--;
     }
   }
 }
 void zip(struct list *l) {
   size_t len = list_length(l);
   size_t mid = (len / 2) + (len % 2);
-  for (size_t i = 0; i < len; i++) {
-    struct node *n = list_get_ith(l, i);
+  for (size_t i = 0; i < mid; i++) {
+    struct node *n = list_get_ith(l, mid+i);
+    struct node *m = list_get_ith(l, i*2);
+    list_unlink_node(l, n);
+    list_insert_after(l, n, m);
   }
 }
 void process(struct config cfg, struct list *l) {
+  sort_list(l, cfg.descending_order);
   if (cfg.remove_odd)
     remove_odd(l);
   if (cfg.combine)
     combine(l);
-  sort_list(l, cfg.descending_order);
   if (cfg.zip_alternating)
     zip(l);
 }
