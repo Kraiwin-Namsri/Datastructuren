@@ -59,20 +59,25 @@ void print_output(struct list *l) {
     node = list_next(node);
   }
 }
-long parse_token(char *token) {
+/* 
+ * Return-Value
+ *  Returns 0 on succes, 1 on not.
+ *
+ */
+int parse_token(char *token, long *n) {
   char *endptr = token;
   char *endptr_prev = endptr;
   while (*endptr != '\0') {
-    long n = strtol(endptr, &endptr, 10);
+    *n = strtol(endptr, &endptr, 10);
     // printf("str: %s char: %c, ptr: %p n: %ld\n", endptr, *endptr, endptr, n);
     if (endptr == endptr_prev) {
       endptr += sizeof(char);
     } else {
-      return n;
+      return 0;
     }
     endptr_prev = endptr;
   }
-  return -1;
+  return 1;
 }
 /* Parses a character buffer like: "1 3 5 1"
 *  Return-Value:
