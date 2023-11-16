@@ -86,7 +86,12 @@ int parse_token(char *token, long *n) {
 int parse_input(struct list *l, char *buf) {
   char *token = strtok(buf, DELIMITER);
   while (token) {
-    long n = parse_token(token);
+    long n;
+    int status = parse_token(token, &n);
+    // printf("stat: %d n: %ld\n", status, n);
+    if(status) {
+      break;
+    }
     struct node *node = list_new_node((int)n);
     if (!node)
       return 1;
@@ -115,24 +120,57 @@ int swap_next(struct list *l, struct node *n) {
 *   Return-Value:
 *     Returns 0 on sucecs, and 1 on fail.
 */
-int sort_list(struct list *l) {
-  
+void sort_list(struct list *l, int descending_order) { 
   size_t len = list_length(l);
   for (int i = (int)len; i >= 0; i--) {
     struct node *n = list_get_ith(l, (size_t)i);
     struct node *n_next = list_next(n);
     if (n_next && n) {
-      while (list_node_get_value(n) > list_node_get_value(n_next)) {
+      while (((list_node_get_value(n) < list_node_get_value(n_next) && descending_order) ||
+              (list_node_get_value(n) > list_node_get_value(n_next) && !descending_order))) {
         if (swap_next(l, n))
           break;
         n_next = list_next(n);
       }
     }
   }
-
-  return 0;
 }
-
+void combine(struct list *l) {
+  size_t len = list_length(l);
+  for (size_t i = 0; i+1 < len; i++) {
+    struct node *n_1 = list_get_ith(l, i);
+    struct node *n_2 = list_get_ith(l, i + 1);
+    list_node_set_value(n_1, list_node_get_value(n_1) + list_node_get_value(n_2));
+    list_unlink_node(l, n_2);
+    list_free_node(n_2);
+  }
+}
+void remove_odd(struct list *l) {
+  size_t len = list_length(l);
+  for (size_t i = 0; i < len; i++) {
+    struct node *n = list_get_ith(l, i);
+    if ((list_node_get_value(n) % 2)) {
+      list_unlink_node(l, n);
+      list_free_node(n);
+    }
+  }
+}
+void zip(struct list *l) {
+  size_t len = list_length(l);
+  size_t mid = (len / 2) + (len % 2);
+  for (size_t i = 0; i < len; i++) {
+    struct node *n = list_get_ith(l, i);
+  }
+}
+void process(struct config cfg, struct list *l) {
+  if (cfg.remove_odd)
+    remove_odd(l);
+  if (cfg.combine)
+    combine(l);
+  sort_list(l, cfg.descending_order);
+  if (cfg.zip_alternating)
+    zip(l);
+}
 int main(int argc, char *argv[]) {
   struct config cfg;
   if (parse_options(&cfg, argc, argv) != 0) {
@@ -147,8 +185,8 @@ int main(int argc, char *argv[]) {
       fprintf(stderr, "Could not parse stdin!\n");
       return 1;
     }
-    sort_list(l);
   }
+  process(cfg, l);
   print_output(l);
   list_cleanup(l);
   return 0;
