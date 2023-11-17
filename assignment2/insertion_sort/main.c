@@ -1,3 +1,7 @@
+/* Name: Kraiwin Namsri
+ * UvA-ID: 15032094
+ * This program is made to sort a string from stdin.
+ */
 #include <check.h>
 #include <getopt.h>
 #include <math.h>
@@ -53,6 +57,9 @@ int parse_options(struct config *cfg, int argc, char *argv[]) {
     }
     return 0;
 }
+/* Print a list to stdout.
+ *  l: a pointer to a list.
+ */
 void print_output(struct list *l) {
   struct node *node = list_head(l);
   while (node) {
@@ -60,10 +67,11 @@ void print_output(struct list *l) {
     node = list_next(node);
   }
 }
-/* 
+/* Parse an integer inside a string. 
+ *  token: a pointer to the start of a string.
+ *  n: a pointer to a long, that can be set to the result.
  * Return-Value
  *  Returns 0 on succes, 1 on not.
- *
  */
 int parse_token(char *token, long *n) {
   char *endptr = token;
@@ -81,9 +89,11 @@ int parse_token(char *token, long *n) {
   return 1;
 }
 /* Parses a character buffer like: "1 3 5 1"
-*  Return-Value:
-*   0 on succes
-*/
+ *   l: a pointer to a list.
+ *   buf: a pointer to the beginning of a string.
+ *  Return-Value:
+ *   0 on succes
+ */
 int parse_input(struct list *l, char *buf) {
   char *token = strtok(buf, DELIMITER);
   while (token) {
@@ -104,10 +114,12 @@ int parse_input(struct list *l, char *buf) {
   return 0;
 }
 
-/*  Swaps node n with node->next inside the list.
-*   Return-Value:
-*     Returns 0 on succes, and 1 on fail.
-*/
+/* Swaps node n with node->next inside the list.
+ *  l: a pointer to a list.
+ *  n: a pointer to the node the switch.
+ * Return-Value:
+ *  Returns 0 on succes, and 1 on fail.
+ */
 int swap_next(struct list *l, struct node *n) {
   struct node *node_next = list_next(n);
   if (!node_next)
@@ -135,6 +147,11 @@ void sort_list(struct list *l, int descending_order) {
     }
   }
 }
+/* Combine every pair inside list l to one node, by adding the values of both.
+*   l: a pointer to a list.
+*  Side-Effects:
+*   Combines every pair.
+*/
 void combine(struct list *l) {
   size_t len = list_length(l);
   for (size_t i = 0; i < len; i++) {
@@ -145,6 +162,8 @@ void combine(struct list *l) {
     list_free_node(n_2);
   }
 }
+/* Removes all odd valued nodes from list l.
+*/
 void remove_odd(struct list *l) {
   size_t len = list_length(l);
   for (size_t i = 0; i < len; i++) {
@@ -157,6 +176,9 @@ void remove_odd(struct list *l) {
     }
   }
 }
+/* Cuts list l in half, with the first half being longer or equal to the second half.
+*   l: a pointer to a list.
+*/
 void zip(struct list *l) {
   size_t len = list_length(l);
   size_t mid = (len / 2) + (len % 2);
@@ -167,6 +189,8 @@ void zip(struct list *l) {
     list_insert_after(l, n, m);
   }
 }
+/* Processes a list in the order: sort, dcoz
+*/
 void process(struct config cfg, struct list *l) {
   sort_list(l, cfg.descending_order);
   if (cfg.remove_odd)
