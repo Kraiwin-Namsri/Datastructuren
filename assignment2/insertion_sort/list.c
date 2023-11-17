@@ -97,7 +97,7 @@ int list_add_back(struct list *l, struct node *n) {
 
 int list_node_get_value(const struct node *n) {
   if (!n)
-    return -1;
+    return 0;
   return n->value;
 }
 
