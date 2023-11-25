@@ -33,8 +33,6 @@ struct node {
 };
 
 /* ... SOME CODE MISSING HERE ... */
-
->>>>>>> 326b42b (started assignment 3)
 struct table *table_init(unsigned long capacity,
                          double max_load_factor,
                          unsigned long (*hash_func)(const unsigned char *)) {
