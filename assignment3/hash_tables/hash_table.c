@@ -32,8 +32,6 @@ struct node {
     struct node *next;
 };
 
-<<<<<<< HEAD
-=======
 /* ... SOME CODE MISSING HERE ... */
 
 >>>>>>> 326b42b (started assignment 3)
@@ -46,25 +44,8 @@ struct table *table_init(unsigned long capacity,
      * node pointers in this block are all set to NULL. A good way to do this is
      * with the calloc() function. Check the manual page 'man calloc' for
      * its usage. */
-<<<<<<< HEAD
-  struct table *t = malloc(sizeof(struct table));
-  if (!t)
-    return NULL;
-  struct node **array = malloc(sizeof(struct node*) * capacity);
-  if (!array) {
-    free(t);
-    return NULL;
-  }
-  t->array = array;
-  t->hash_func = hash_func;
-  t->max_load_factor = max_load_factor;
-  t->capacity = capacity;
-  t->load = 0;
-  return t;
-=======
 
     /* ... SOME CODE MISSING HERE ... */
->>>>>>> 326b42b (started assignment 3)
 }
 
 int table_insert(struct table *t, const char *key, int value) {
@@ -76,13 +57,7 @@ struct array *table_lookup(const struct table *t, const char *key) {
 }
 
 double table_load_factor(const struct table *t) {
-<<<<<<< HEAD
-  if (!t)
-    return -1.0;
-  return (double)t->load / (double)t->capacity;
-=======
     /* ... SOME CODE MISSING HERE ... */
->>>>>>> 326b42b (started assignment 3)
 }
 
 int table_delete(struct table *t, const char *key) {
@@ -90,12 +65,5 @@ int table_delete(struct table *t, const char *key) {
 }
 
 void table_cleanup(struct table *t) {
-<<<<<<< HEAD
-  if (!t)
-    return;
-  free(t->array);
-  free(t);
-=======
     /* ... SOME CODE MISSING HERE ... */
->>>>>>> 326b42b (started assignment 3)
 }
