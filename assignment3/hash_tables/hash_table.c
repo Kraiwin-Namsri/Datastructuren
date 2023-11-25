@@ -34,6 +34,45 @@ struct node {
 };
 /* ... SOME CODE MISSING HERE ... */
 
+void print_array_values(struct array *a) {
+  if (a) {
+    unsigned long size = array_size(a);
+    for (int i = 0; i < size; i++) {
+      printf("%d, ", array_get(a, i));
+    }
+  }
+  printf("\n");
+}
+
+void print_node(struct node *n) {
+  if (n) {
+    printf("node: %p, next: %p, key: %s, values: ", (void*)(0xFFFF & (unsigned long)n),
+           (void*)(0xFFFF & (unsigned long)n->next), n->key);
+    print_array_values(n->value);
+  } else {
+    printf("node: %p, next: -, key: -, values: -", (void*)n);
+  }
+}
+
+void print_bucket(struct node *n) {
+  struct node *node = n;
+  int tabs_amount = 0;
+  while (node) {
+    for (int i = 0; i < tabs_amount; i++) {
+      printf("\t");
+    }
+    print_node(node);
+    node = node->next;
+    tabs_amount++;
+  }
+}
+
+void print_table(struct table *t) {
+  for (int i = 0; i < (int)t->capacity; i++) {
+    print_bucket(t->array[i]);
+  }
+}
+
 /* Initialize a node with a key and a resizable array. */
 struct node *node_init(const char *key) {
   struct node *n = malloc(sizeof(struct node));
@@ -77,6 +116,14 @@ void node_list_cleanup(struct node *n) {
   }
 }
 
+struct node *node_tail(struct node *n) {
+  if (!n)
+    return NULL;
+  struct node *node;
+  for (node = n; node->next; node = node->next);
+  return node;
+}
+
 int node_add_value(struct node *n, int value) {
   if (!n)
     return 1;
@@ -84,6 +131,14 @@ int node_add_value(struct node *n, int value) {
     return 1;
   assert(array_get(n->value, array_size(n->value) - 1) == value);
   return 0;
+}
+
+struct node *node_find_key(struct node *n, const char *key) {
+  if (!n || !key)
+    return NULL;
+  struct node *node = n;
+  for (node = n; node && strcmp(key, node->key); node = node->next);
+  return node;
 }
 
 unsigned long calculate_array_index(unsigned long (*hash_func)(const unsigned char *),
@@ -122,13 +177,29 @@ int table_insert(struct table *t, const char *key, int value) {
   if (!t || !key)
     return 1;
   unsigned long array_index = calculate_array_index(t->hash_func, key, t->capacity);
-  struct node *node_head = t->array[array_index];
-  if (!node_head) {
+  struct node *n_head = t->array[array_index];
+  if (!n_head) {
+    /* This means that the bucket is still empty. */
     struct node *n = node_init(key);
     if (!n)
       return 1;
     node_add_value(n, value);
     t->array[array_index] = n;
+  } else {
+    /* This means that either the node has the same key or does not. */
+    struct node *n = node_find_key(n_head, key);
+    if (n) {
+      /* The node with the same key exists. */
+      node_add_value(n, value);
+    } else {
+      /* The node with the same key does not exist. */
+      n = node_init(key);
+      if (!n)
+        return 1;
+      node_add_value(n, value);
+      struct node *n_tail = node_tail(n_head);
+      n_tail->next = n;
+    }
   }
   return 0;
 }
@@ -138,7 +209,10 @@ struct array *table_lookup(const struct table *t, const char *key) {
     return NULL;
   unsigned long array_index = calculate_array_index(t->hash_func, key, t->capacity);
   struct node *node_head = t->array[array_index];
-  return node_head->value;
+  struct node *node = node_find_key(node_head, key);
+  if (!node)
+    return NULL;
+  return node->value;
 }
 
 double table_load_factor(const struct table *t) {
@@ -146,7 +220,7 @@ double table_load_factor(const struct table *t) {
 }
 
 int table_delete(struct table *t, const char *key) {
-    /* ... SOME CODE MISSING HERE ... */
+
 }
 
 /* Cleans up all node lists inside the array and frees the array */
