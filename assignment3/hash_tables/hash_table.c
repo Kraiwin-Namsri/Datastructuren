@@ -116,6 +116,27 @@ void node_list_cleanup(struct node *n) {
   }
 }
 
+int node_unlink(struct node **head, struct node *n) {
+  if (*head == n) {
+    *head = n->next;
+    return 0;
+  }
+  if (!head || !*head || !n)
+    return 1;
+  struct node *node = *head;
+  struct node *node_prev = NULL;
+  while (node && node != n) {
+    node_prev = node;
+    node = node->next;
+  }
+
+  if (node_prev) {
+    node_prev->next = n->next;
+  }
+  n->next = NULL;
+  return 0;
+}
+
 struct node *node_tail(struct node *n) {
   if (!n)
     return NULL;
@@ -220,7 +241,17 @@ double table_load_factor(const struct table *t) {
 }
 
 int table_delete(struct table *t, const char *key) {
-
+  if (!t || !key)
+    return -1;
+  unsigned long array_index = calculate_array_index(t->hash_func, key, t->capacity);
+  struct node *head = t->array[array_index];
+  struct node *node = node_find_key(head, key);
+  if (!node)
+    return 1;
+  if (node_unlink(&(t->array[array_index]), node))
+    return 1;
+  node_cleanup(node);
+  return 0;
 }
 
 /* Cleans up all node lists inside the array and frees the array */

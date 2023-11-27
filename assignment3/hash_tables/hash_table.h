@@ -41,3 +41,5 @@ int table_delete(struct table *t, const char *key);
 
 /* Clean up the hash table data structure. */
 void table_cleanup(struct table *t);
+
+void print_table(struct table *t);
