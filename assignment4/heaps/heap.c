@@ -1,8 +1,3 @@
-/* Name: Kraiwin Namsri
- * UvA-netID: 
- *
- * This program implements a min-heap.
- */
 #include <assert.h>
 #include <math.h>
 #include <stdio.h>
@@ -11,40 +6,25 @@
 #include "array.h"
 #include "prioq.h"
 
-#define INITIAL_HEAP_ARRAY_SIZE 64
-
-static void print_array(struct heap *h) {
-  long size = array_size(h->array);
-  for (int i = 0; i < size; i++) {
-    void * value = array_get(h->array, i);
-    printf("array[%d] = %ld\n", i, (long)value);
-  }
-}
-
-/* Returns the amount of elements inside the heap
- * Returns -1 on error.
- */
-long heap_size(struct heap *h) {
-  long size = array_size(h->array);
-  if (size == -1l)
-    return -1;
-  return size - 1;
-}
-
 static struct heap *heap_init(int (*compare)(const void *, const void *)) {
-  struct heap *h = malloc(sizeof(struct heap));
-  if (!h || !compare)
+  if (!compare)
     return NULL;
 
-  struct array *array = array_init(INITIAL_HEAP_ARRAY_SIZE);
+  struct heap *h = malloc(sizeof(struct heap));
+  if (!h)
+    return NULL;
+
+  struct array *array = array_init(50);
   if (!array) {
     free(h);
     return NULL;
   }
+
   array_append(array, NULL);
+  assert(array_size(array) == 1);
+
   h->array = array;
   h->compare = compare;
-  assert(heap_size(h) == 0);
   return h;
 }
 
@@ -55,12 +35,14 @@ prioq *prioq_init(int (*compare)(const void *, const void *)) {
 long int prioq_size(const prioq *q) {
   if (!q)
     return -1;
-  return array_size(q->array);
+
+  return array_size(q->array) - 1;
 }
 
 static int heap_cleanup(struct heap *h, void free_func(void *)) {
   if (!h)
-    return 1;
+    return -1;
+
   array_cleanup(h->array, free_func);
   free(h);
   return 0;
@@ -70,15 +52,8 @@ int prioq_cleanup(prioq *q, void free_func(void *)) {
   return heap_cleanup(q, free_func);
 }
 
-/* Calculates the parent's index of the child.
- * Beware! It is the programmers duty to check if the return-value is correct!
- */
-static long calculate_parent_index(long index_child) {
-  /* No need to check if it is the right or left child, because there is integer devision flooring. */
-  return index_child / 2;
-}
-
 /* Swap index a with b inside the array of h. 
+ * Returns 0 on succes, 1 on failure.
  */
 int swap(struct heap *h, long a, long b) {
   void *a_buffer = array_get(h->array, a);
@@ -91,80 +66,112 @@ int swap(struct heap *h, long a, long b) {
   return 0;
 }
 
-/* Percolates index up untill the compare function says not to.
- *
+/* A recursive function for percolating up the value inside index. 
+ * Returns 0 on succes, something else on failure.
  */
-static void percolate_up(struct heap *h, long index_child) {
-  long index_parent = calculate_parent_index(index_child);
-  void *parent_buffer = array_get(h->array, index_parent);
-  void *child_buffer = array_get(h->array, index_child);
-  if (!child_buffer || !parent_buffer)
-    return;
+static int percolate_up(struct heap *h, long child_index) {
+  if (!h || child_index < 1)
+    return 1;
+
+  void *child = array_get(h->array, child_index);
+  if (!child)
+    return 3;
+
+  long parent_index = child_index / 2;
+  void *parent = array_get(h->array, parent_index);
+
+  /* There is no parent anymore, indicating that percolating up is done. */
+  if (!parent)
+    return 0;
 
   /* If the value of the child is smaller than the parent, swap. */
-  if (h->compare(child_buffer, parent_buffer) < 0) {
-    swap(h, index_child, index_parent);
-    percolate_up(h, index_parent);
+  if (h->compare(child, parent) < 0) {
+    if (swap(h, child_index, parent_index))
+      return 4;
+    /* Continue percolating up with the same node.
+       (Which is now at the index of the previous parent) */
+    return percolate_up(h, parent_index);
   }
+
+  /* An edge case has happened */
+  return 5;
 }
 
 static int heap_insert(struct heap *h, void *p) {
   if (!h)
     return 1;
-
-  if (array_append(h->array, p)) 
+  if (array_append(h->array, p))
     return 2;
-
-  long index_rightmost = array_size(h->array);
-  if (index_rightmost <= 1)
-    return 3;
-
-  percolate_up(h, index_rightmost);
-  return 0;
+  return percolate_up(h, array_size(h->array) - 1);
 }
 
 int prioq_insert(prioq *q, void *p) {
-  return heap_insert(q, p);
+    return heap_insert(q, p);
 }
 
-/* Calculates the index of the child of the parent
- *
- * index_parent: a long of the index of the parent.
- * right_child: a boolean value either 0 or 1. Denoting if the left or right child should be returned.
+/* Swaps a with b if a > b.
+ * Returns 1 if swapped, 0 if not.
  */
-static long calculate_child_index(long index_parent, int right_child) {
-  return (index_parent * 2) + right_child;
+static int swap_if_greater(struct heap *h, long a_index, long b_index) {
+  void *a = array_get(h->array, a_index);
+  void *b = array_get(h->array, b_index);
+  int should_swap = h->compare(a, b) > 0;
+  if (should_swap)
+    swap(h, a_index, b_index);
+  return should_swap;
 }
 
+/* A recursive function that percolates down the value in parent_index 
+ * Returns 0 on succes, something else on failure.
+ */
+static int percolate_down(struct heap *h, long parent_index) {
+  if (!h || parent_index < 1)
+    return 1;
+  
+  long l_child_index = parent_index * 2;
+  long r_child_index = l_child_index + 1;
+  void *parent = array_get(h->array, parent_index);
+  void *l_child = array_get(h->array, l_child_index);
+  void *r_child = array_get(h->array, r_child_index);
 
-static void percolate_down(struct heap *h, long index) {
-  long index_right = calculate_child_index(index, 1);
-  long index_left = calculate_child_index(index, 0);
-  void *parent_buffer = array_get(h->array, index);
-  void *right_buffer = array_get(h->array, index_right);
-  void *left_buffer = array_get(h->array, index_left);
+  /* If both childs are NULL then this means that percolating down is done. */
+  if (!l_child && !r_child) {
+    return 0;
 
-  if (!right_buffer && !left_buffer) {
-    return; 
-  } else if (!right_buffer) {
-    if (h->compare(parent_buffer, left_buffer) > 0) {
-      swap(h, index, index_left);
-      percolate_down(h, index_left);
-    }
-  } else if (!left_buffer) {
-    if (h->compare(parent_buffer, right_buffer) > 0) {
-      swap(h, index, index_right);
-      percolate_down(h, index_right);
-    }
+  } else if (!l_child) {
+    /* Only the right child exists */
+    if (!swap_if_greater(h, parent_index, r_child_index))
+      return 0;
+
+    /* Continue percolating down with the same node */
+    return percolate_down(h, r_child_index);
+
+  } else if (!r_child) {
+    /* Only the left child exists */
+    if (!swap_if_greater(h, parent_index, l_child_index))
+      return 0;
+
+    /* Continue percolating down with the same node */
+    return percolate_down(h, l_child_index);
+
   } else {
-    if (h->compare(left_buffer, right_buffer) > 0) {
-      /* This means right is smaller, and should be swapped. */
-      swap(h, index, index_right);
-      percolate_down(h, index_right);
+    /* This means that both the right and left child exists. */
+
+    /* If the parent should be swapped it must be with it's largest child. */
+    if (h->compare(l_child, r_child) > 0) {
+      if (!swap_if_greater(h, parent_index, l_child_index))
+        return 0;
+      /* This means left is larger */
+
+      /* Continue percolating down with the same node */
+      return percolate_down(h, l_child_index);
     } else {
-      /* This means left is smaller, and should be swapped. */
-      swap(h, index, index_left);
-      percolate_down(h, index_left);
+      /* This means right is larger */
+      if (!swap_if_greater(h, parent_index, r_child_index))
+        return 0;
+
+      /* Continue percolating down with the same node */
+      return percolate_down(h, r_child_index);
     }
   }
 }
@@ -172,12 +179,23 @@ static void percolate_down(struct heap *h, long index) {
 static void *heap_pop(struct heap *h) {
   if (!h)
     return NULL;
-  if (heap_size(h) <= 0)
+
+  long leaf_index = array_size(h->array) - 1;
+  if (leaf_index < 0)
     return NULL;
+
+  /* Removing the root of the array creates a hole */
   void *root = array_get(h->array, 1);
-  void *rightmost_buffer = array_pop(h->array);
-  array_set(h->array, 1, rightmost_buffer);
-  percolate_down(h, 1);
+  void *leaf = array_get(h->array, leaf_index);
+
+  /* Fix the hole by moving the rightmost leaf to the rootposition */
+  array_set(h->array, 1, leaf);
+
+  /* Percolate the root down to restore the heap property */
+  int ret = percolate_down(h, 1);
+  if (ret)
+    return NULL;
+
   return root;
 }
 

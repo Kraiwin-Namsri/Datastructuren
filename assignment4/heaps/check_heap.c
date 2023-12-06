@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "array.h"
 #include "prioq.h"
 
 // For older versions of the check library
@@ -66,16 +67,16 @@ int check_min_heap(prioq *p, int index) {
     int left = 1;
     int right = 1;
 
-    if (index * 2 + 1 < prioq_size(p)) {
+    if (index * 2 + child_adjustment < prioq_size(p)) {
         left = p->compare(array_get(p->array, index * 2 + child_adjustment),
                           array_get(p->array, index));
-        left = left > 0 && check_min_heap(p, index * 2 + child_adjustment) > 0;
+        left = left >= 0 && check_min_heap(p, index * 2 + child_adjustment) > 0;
     }
 
-    if (index * 2 + 2 < prioq_size(p)) {
+    if (index * 2 + child_adjustment + 1 < prioq_size(p)) {
         right = p->compare(array_get(p->array, index * 2 + child_adjustment + 1),
                            array_get(p->array, index));
-        right = right > 0 && check_min_heap(p, index * 2 + child_adjustment + 1) > 0;
+        right = right >= 0 && check_min_heap(p, index * 2 + child_adjustment + 1) > 0;
     }
 
     return left > 0 && right > 0;
@@ -85,21 +86,22 @@ int check_max_heap(prioq *p, int index) {
     int left = 1;
     int right = 1;
 
-    if (index * 2 + 1 < prioq_size(p)) {
+    if (index * 2 + child_adjustment < prioq_size(p)) {
         left = p->compare(array_get(p->array, index),
                           array_get(p->array, index * 2 + child_adjustment));
-        left = left > 0 && check_max_heap(p, index * 2 + child_adjustment) > 0;
+        left = left >= 0 && check_max_heap(p, index * 2 + child_adjustment) > 0;
     }
 
-    if (index * 2 + 2 < prioq_size(p)) {
+    if (index * 2 + child_adjustment + 1 < prioq_size(p)) {
         right = p->compare(array_get(p->array, index),
                            array_get(p->array, index * 2 + child_adjustment + 1));
-        right = right > 0 && check_max_heap(p, index * 2 + child_adjustment + 1) > 0;
+        right = right >= 0 && check_max_heap(p, index * 2 + child_adjustment + 1) > 0;
     }
 
     return left > 0 && right > 0;
 }
 
+/* Returns 1 if the heap is correct, 0 otherwise. */
 int check_heap(prioq *p) {
     // Set global child_adjustment var before verifying heap.
     child_adjustment = calc_child_adjustment();
@@ -112,6 +114,24 @@ int check_heap(prioq *p) {
     return check_min_heap(p, start_index) || check_max_heap(p, start_index);
 }
 
+/* Helper functions to print the current int heap state. */
+void print_int_heap(struct heap *h) {
+    printf("--------------------------------\n");
+    printf("printing heap array of size: %ld\n", array_size(h->array));
+    for (int i = 0; i < array_size(h->array); i++) {
+        int *val = (int *)array_get(h->array, i);
+        if (val) {
+            printf("%d: %d\n", i, *val);
+        } else {
+            printf("%d: null\n", i);
+        }
+    }
+    printf("--------------------------------\n");
+}
+
+void free_nothing(void *item) {
+  /* Do absolutely nothing */
+}
 /* Tests */
 
 /* test init/cleanup */
@@ -127,24 +147,40 @@ START_TEST(test_percolate_up) {
   ck_assert_ptr_nonnull(p);
 
   int a = 5;
+  int b = 1;
   ck_assert_int_eq(prioq_insert(p, &a), 0);
-  ck_assert_int_eq(array_get(p->array, 1), 5);
-  ck_assert_int_eq(prioq_cleanup(p, NULL), 0);
+  ck_assert_int_eq(prioq_insert(p, &b), 0);
+  ck_assert_ptr_eq(array_get(p->array, 1), &b);
+  ck_assert_ptr_eq(array_get(p->array, 2), &a);
+  ck_assert_int_eq(prioq_cleanup(p, free_nothing), 0);
+}
+END_TEST
+
+START_TEST(test_percolate_up10) {
+  prioq *p = prioq_init(int_compare);
+  ck_assert_ptr_nonnull(p);
+  int values[10] = { 9, 8, 7, 6, 5, 4, 3, 2, 1 };
+
+  for (int i = 0; i < 10; i++) {
+    ck_assert_int_eq(prioq_insert(p, values + i), 0);
+    ck_assert_ptr_eq(array_get(p->array, 1), values + i);
+  }
+
+  ck_assert_int_eq(prioq_cleanup(p, free_nothing), 0);
 }
 END_TEST
 
 /* test insert/pop */
 START_TEST(test_insert_pop_basic) {
-  prioq *p = prioq_init(int_compare);
-  ck_assert_ptr_nonnull(p);
+    prioq *p = prioq_init(int_compare);
+    ck_assert_ptr_nonnull(p);
 
-  int a = 5;
-  ck_assert_int_eq(prioq_insert(p, &a), 0);
-  ck_assert_int_eq(*((int *) prioq_pop(p)), a);
-  ck_assert_int_eq(prioq_cleanup(p, NULL), 0);
+    int a = 5;
+    ck_assert_int_eq(prioq_insert(p, &a), 0);
+    ck_assert_int_eq(*((int *) prioq_pop(p)), a);
+    ck_assert_int_eq(prioq_cleanup(p, free_nothing), 0);
 }
 END_TEST
-
 
 START_TEST(test_insert_pop10) {
     prioq *p = prioq_init(int_compare);
@@ -153,11 +189,18 @@ START_TEST(test_insert_pop10) {
     int values[10] = { 5, 7, 2, 4, 0, 9, 12, 13, 28, 1 };
     int expected[10] = { 0, 1, 2, 4, 5, 7, 9, 12, 13, 28 };
 
-    for (int i = 0; i < 10; i++)
+    for (int i = 0; i < 10; i++) {
+        // printf("inserting: %d\n", values[i]);
         ck_assert_int_eq(prioq_insert(p, values + i), 0);
+        // print_int_heap(p);
+    }
 
-    for (int i = 0; i < 10; i++)
-        ck_assert_int_eq(*((int *) prioq_pop(p)), expected[i]);
+    for (int i = 0; i < 10; i++) {
+        int x = *(int *) prioq_pop(p);
+        // printf("popped value: %d\n", x);
+        // print_int_heap(p);
+        ck_assert_int_eq(x, expected[i]);
+    }
 
     ck_assert_int_eq(prioq_cleanup(p, NULL), 0);
 }
@@ -180,7 +223,7 @@ START_TEST(test_insert_pop_many) {
     }
 
     qsort(expected, amount, sizeof(int), int_compare);
-    ck_assert_int_gt(check_heap(p), 0);
+    ck_assert_int_eq(check_heap(p), 1);
 
     for (unsigned int i = 0; i < amount; i++) {
         ck_assert_int_eq(*((int *) prioq_pop(p)), expected[i]);
@@ -189,6 +232,36 @@ START_TEST(test_insert_pop_many) {
     ck_assert_int_eq(prioq_cleanup(p, NULL), 0);
 }
 END_TEST
+
+START_TEST(test_insert_pop_with_duplicates) {
+    prioq *p = prioq_init(int_compare);
+    ck_assert_ptr_nonnull(p);
+
+    int values[10] = { 75, 74, 57, 83, 8, 21, 92, 36, 92, 36 };
+    int expected[10];
+
+    for (unsigned int i = 0; i < 10; i++) {
+        expected[i] = values[i];
+        // printf("inserting: %d\n", values[i]);
+        ck_assert_int_eq(prioq_insert(p, values + i), 0);
+        // print_int_heap(p);
+        ck_assert_int_eq(check_heap(p), 1);
+    }
+
+    qsort(expected, 10, sizeof(int), int_compare);
+
+    for (unsigned int i = 0; i < 10; i++) {
+        int x = *(int *) prioq_pop(p);
+        // printf("popped value: %d\n", x);
+        // print_int_heap(p);
+        ck_assert_int_eq(x , expected[i]);
+        ck_assert_int_eq(check_heap(p), 1);
+    }
+
+    ck_assert_int_eq(prioq_cleanup(p, NULL), 0);
+}
+END_TEST
+
 
 /* Test pop on empty heap. */
 START_TEST(test_pop_empty) {
@@ -214,16 +287,68 @@ START_TEST(test_heap_valid) {
 
     for (int i = 0; i < 10; i++) {
         ck_assert_int_eq(prioq_insert(p, values + i), 0);
-        ck_assert_int_gt(check_heap(p), 0);
+        ck_assert_int_eq(check_heap(p), 1);
     }
 
     for (int i = 0; i < 10; i++) {
         prioq_pop(p);
-        ck_assert_int_gt(check_heap(p), 0);
+        ck_assert_int_eq(check_heap(p), 1);
     }
     ck_assert_int_eq(prioq_cleanup(p, NULL), 0);
 }
 END_TEST
+
+
+// To run this test compile with: make CFLAGS=-DINTERNAL_TESTS=1
+#ifdef INTERNAL_TESTS
+/* Internal test case for check_heap checking function.
+ * First we check that the valid heap is accepted.
+ * Then we check that a invalid heap is detected as invalid.
+ */
+START_TEST(internal_test_check_heap) {
+    prioq *p = prioq_init(int_compare);
+    ck_assert_ptr_nonnull(p);
+
+    int valid_heap[] = { 1, 5, 10, 8, 7, 11 };
+
+    // Manually create the 0-based heap using array_append
+    for (size_t i = 0; i < sizeof(valid_heap) / sizeof(valid_heap[0]); i++) {
+        array_append(p->array, valid_heap + i);
+    }
+    ck_assert_int_eq(check_heap(p), 1);
+
+    for (size_t i = 0; i < sizeof(valid_heap) / sizeof(valid_heap[0]); i++) {
+        prioq_pop(p);
+    }
+
+    int invalid_heap[] = { 5, 1, 10, 8, 7, 11 };
+    // Manually create the 0-based heap using array_append
+    for (size_t i = 0; i < sizeof(invalid_heap) / sizeof(invalid_heap[0]); i++) {
+        array_append(p->array, invalid_heap + i);
+    }
+    // print_int_heap(p);
+    ck_assert_int_eq(check_heap(p), 0);
+
+    for (size_t i = 0; i < sizeof(invalid_heap) / sizeof(invalid_heap[0]); i++) {
+        prioq_pop(p);
+    }
+
+    int invalid_heap2[] = { 1, 5, 11, 8, 7, 10 };
+    // Manually create the 0-based heap using array_append
+    for (size_t i = 0; i < sizeof(invalid_heap2) / sizeof(invalid_heap2[0]); i++) {
+        array_append(p->array, invalid_heap2 + i);
+    }
+    // print_int_heap(p);
+    ck_assert_int_eq(check_heap(p), 0);
+
+    for (size_t i = 0; i < sizeof(invalid_heap2) / sizeof(invalid_heap2[0]); i++) {
+        prioq_pop(p);
+    }
+
+    ck_assert_int_eq(prioq_cleanup(p, NULL), 0);
+}
+END_TEST
+#endif
 
 Suite *heap_suite(void) {
     Suite *s;
@@ -236,11 +361,16 @@ Suite *heap_suite(void) {
     /* Regular tests. */
     tcase_add_test(tc_core, test_init);
   tcase_add_test(tc_core, test_percolate_up);
+    tcase_add_test(tc_core, test_percolate_up10);
     tcase_add_test(tc_core, test_insert_pop_basic);
     tcase_add_test(tc_core, test_insert_pop10);
     tcase_add_test(tc_core, test_insert_pop_many);
+    tcase_add_test(tc_core, test_insert_pop_with_duplicates);
     tcase_add_test(tc_core, test_pop_empty);
     tcase_add_test(tc_core, test_heap_valid);
+#ifdef INTERNAL_TESTS
+    tcase_add_test(tc_core, internal_test_check_heap);
+#endif
 
     suite_add_tcase(s, tc_core);
     return s;
