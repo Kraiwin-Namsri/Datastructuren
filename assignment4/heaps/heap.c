@@ -93,8 +93,8 @@ static int percolate_up(struct heap *h, long child_index) {
     return percolate_up(h, parent_index);
   }
 
-  /* An edge case has happened */
-  return 5;
+  /* The child is bigger than parent, so we are done! */
+  return 0;
 }
 
 static int heap_insert(struct heap *h, void *p) {
@@ -130,7 +130,6 @@ static int percolate_down(struct heap *h, long parent_index) {
   
   long l_child_index = parent_index * 2;
   long r_child_index = l_child_index + 1;
-  void *parent = array_get(h->array, parent_index);
   void *l_child = array_get(h->array, l_child_index);
   void *r_child = array_get(h->array, r_child_index);
 
