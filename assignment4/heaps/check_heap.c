@@ -122,17 +122,29 @@ START_TEST(test_init) {
 }
 END_TEST
 
-/* test insert/pop */
-START_TEST(test_insert_pop_basic) {
-    prioq *p = prioq_init(int_compare);
-    ck_assert_ptr_nonnull(p);
+START_TEST(test_percolate_up) {
+  prioq *p = prioq_init(int_compare);
+  ck_assert_ptr_nonnull(p);
 
-    int a = 5;
-    ck_assert_int_eq(prioq_insert(p, &a), 0);
-    ck_assert_int_eq(*((int *) prioq_pop(p)), a);
-    ck_assert_int_eq(prioq_cleanup(p, NULL), 0);
+  int a = 5;
+  ck_assert_int_eq(prioq_insert(p, &a), 0);
+  ck_assert_int_eq(array_get(p->array, 1), 5);
+  ck_assert_int_eq(prioq_cleanup(p, NULL), 0);
 }
 END_TEST
+
+/* test insert/pop */
+START_TEST(test_insert_pop_basic) {
+  prioq *p = prioq_init(int_compare);
+  ck_assert_ptr_nonnull(p);
+
+  int a = 5;
+  ck_assert_int_eq(prioq_insert(p, &a), 0);
+  ck_assert_int_eq(*((int *) prioq_pop(p)), a);
+  ck_assert_int_eq(prioq_cleanup(p, NULL), 0);
+}
+END_TEST
+
 
 START_TEST(test_insert_pop10) {
     prioq *p = prioq_init(int_compare);
@@ -223,6 +235,7 @@ Suite *heap_suite(void) {
 
     /* Regular tests. */
     tcase_add_test(tc_core, test_init);
+  tcase_add_test(tc_core, test_percolate_up);
     tcase_add_test(tc_core, test_insert_pop_basic);
     tcase_add_test(tc_core, test_insert_pop10);
     tcase_add_test(tc_core, test_insert_pop_many);
