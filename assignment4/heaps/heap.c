@@ -70,8 +70,10 @@ int swap(struct heap *h, long a, long b) {
  * Returns 0 on succes, something else on failure.
  */
 static int percolate_up(struct heap *h, long child_index) {
-  if (!h || child_index < 1)
+  if (!h || child_index < 1) {
+    printf("child: %ld\n", child_index);
     return 1;
+  }
 
   void *child = array_get(h->array, child_index);
   if (!child)
@@ -125,11 +127,12 @@ static int swap_if_greater(struct heap *h, long a_index, long b_index) {
  * Returns 0 on succes, something else on failure.
  */
 static int percolate_down(struct heap *h, long parent_index) {
-  if (!h || parent_index < 1)
+  if (!h)
     return 1;
   
   long l_child_index = parent_index * 2;
   long r_child_index = l_child_index + 1;
+  void *parent = array_get(h->array, parent_index);
   void *l_child = array_get(h->array, l_child_index);
   void *r_child = array_get(h->array, r_child_index);
 
@@ -137,7 +140,9 @@ static int percolate_down(struct heap *h, long parent_index) {
   if (!l_child && !r_child) {
     return 0;
 
-  } else if (!l_child) {
+  }
+
+  if (!l_child) {
     /* Only the right child exists */
     if (!swap_if_greater(h, parent_index, r_child_index))
       return 0;
@@ -145,7 +150,9 @@ static int percolate_down(struct heap *h, long parent_index) {
     /* Continue percolating down with the same node */
     return percolate_down(h, r_child_index);
 
-  } else if (!r_child) {
+  }
+
+  if (!r_child) {
     /* Only the left child exists */
     if (!swap_if_greater(h, parent_index, l_child_index))
       return 0;
@@ -153,39 +160,40 @@ static int percolate_down(struct heap *h, long parent_index) {
     /* Continue percolating down with the same node */
     return percolate_down(h, l_child_index);
 
-  } else {
-    /* This means that both the right and left child exists. */
-
-    /* If the parent should be swapped it must be with it's largest child. */
-    if (h->compare(l_child, r_child) > 0) {
-      if (!swap_if_greater(h, parent_index, l_child_index))
-        return 0;
-      /* This means left is larger */
-
-      /* Continue percolating down with the same node */
-      return percolate_down(h, l_child_index);
-    } else {
-      /* This means right is larger */
-      if (!swap_if_greater(h, parent_index, r_child_index))
-        return 0;
-
-      /* Continue percolating down with the same node */
-      return percolate_down(h, r_child_index);
-    }
   }
+  /* This means that both the right and left child exists. */
+
+  long child_to_swap;
+  if (h->compare(parent, l_child) > 0 && h->compare(parent, r_child) > 0) {
+    /* This means that both the childs are larger than it's parent.
+       The parent must be swapped with it's smallest child. */
+    if (h->compare(l_child, r_child) > 0) {
+      child_to_swap = r_child_index;
+    } else {
+      child_to_swap = l_child_index;
+    }
+
+  } else if (h->compare(parent, l_child) > 0) {
+    child_to_swap = l_child_index;
+
+  } else if (h->compare(parent, r_child) > 0) {
+    child_to_swap = r_child_index;
+
+  } else {
+    /* This means r >= p and l >= p, thus we are done */
+    return 0;
+  }
+  swap(h, parent_index, child_to_swap);
+  return percolate_down(h, child_to_swap);
 }
 
 static void *heap_pop(struct heap *h) {
-  if (!h)
-    return NULL;
-
-  long leaf_index = array_size(h->array) - 1;
-  if (leaf_index < 0)
+  if (!h || array_size(h->array) <= 1)
     return NULL;
 
   /* Removing the root of the array creates a hole */
   void *root = array_get(h->array, 1);
-  void *leaf = array_get(h->array, leaf_index);
+  void *leaf = array_pop(h->array);
 
   /* Fix the hole by moving the rightmost leaf to the rootposition */
   array_set(h->array, 1, leaf);

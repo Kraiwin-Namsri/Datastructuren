@@ -178,7 +178,7 @@ START_TEST(test_insert_pop_basic) {
     int a = 5;
     ck_assert_int_eq(prioq_insert(p, &a), 0);
     ck_assert_int_eq(*((int *) prioq_pop(p)), a);
-    ck_assert_int_eq(prioq_cleanup(p, free_nothing), 0);
+    ck_assert_int_eq(prioq_cleanup(p, NULL), 0);
 }
 END_TEST
 
@@ -190,15 +190,15 @@ START_TEST(test_insert_pop10) {
     int expected[10] = { 0, 1, 2, 4, 5, 7, 9, 12, 13, 28 };
 
     for (int i = 0; i < 10; i++) {
-        printf("inserting: %d\n", values[i]);
+        // printf("inserting: %d\n", values[i]);
         ck_assert_int_eq(prioq_insert(p, values + i), 0);
-        print_int_heap(p);
+        // print_int_heap(p);
     }
 
     for (int i = 0; i < 10; i++) {
         int x = *(int *) prioq_pop(p);
-        printf("popped value: %d\n", x);
-        print_int_heap(p);
+        // printf("popped value: %d\n", x);
+        // print_int_heap(p);
         ck_assert_int_eq(x, expected[i]);
     }
 
