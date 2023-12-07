@@ -53,8 +53,7 @@ int prioq_cleanup(prioq *q, void free_func(void *)) {
 }
 
 /* Swap index a with b inside the array of h. 
- * Returns 0 on succes, 1 on failure.
- */
+ * Returns 0 on succes, 1 on failure. */
 int swap(struct heap *h, long a, long b) {
   void *a_buffer = array_get(h->array, a);
   void *b_buffer = array_get(h->array, b);
@@ -67,8 +66,7 @@ int swap(struct heap *h, long a, long b) {
 }
 
 /* A recursive function for percolating up the value inside index. 
- * Returns 0 on succes, something else on failure.
- */
+ * Returns 0 on succes, something else on failure. */
 static int percolate_up(struct heap *h, long child_index) {
   if (!h || child_index < 1) {
     printf("child: %ld\n", child_index);
