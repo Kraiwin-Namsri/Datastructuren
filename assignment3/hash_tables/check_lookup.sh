@@ -25,7 +25,7 @@ if [[ "$ret" -eq 0 ]]; then
     fi
 else
     echo "Command: $*"
-    echo "You're command exit with an error code, not diffing. Output:"
+    echo "Your command exit with an error code, not diffing. Output:"
     cat "$outfile"
     echo
     echo "Output on stderr:"

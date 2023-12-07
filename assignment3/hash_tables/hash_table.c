@@ -1,3 +1,11 @@
+/* Name: Kraiwin Namsri
+ * UvAnetID: 15032094@uva.nl
+ * Study: BSc Informatica
+ *
+ * This is an implementation of a hashtable. 
+ * For more detailed function descriptions please read the corresponding header file.
+ */
+
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -32,15 +40,15 @@ struct node {
     /* Next pointer */
     struct node *next;
 };
-/* ... SOME CODE MISSING HERE ... */
 
 void print_array_values(struct array *a) {
   if (a) {
     unsigned long size = array_size(a);
-    for (int i = 0; i < size; i++) {
-      printf("%d, ", array_get(a, i));
+    for (int i = 0; i < (int)size; i++) {
+      printf("%d, ", array_get(a, (unsigned long)i));
     }
   }
+
   printf("\n");
 }
 
@@ -78,17 +86,20 @@ struct node *node_init(const char *key) {
   struct node *n = malloc(sizeof(struct node));
   if (!n)
     return NULL;
+
   struct array *value = array_init(100);
   if (!value) {
     free(n);
     return NULL;
   }
+
   char *key_copy = malloc((strlen(key) + 1) * sizeof(char));
   if (!key_copy) {
     free(n);
     free(value);
     return NULL;
   }
+
   strcpy(key_copy, key);
   n->key = key_copy;
   n->value = value;
@@ -108,6 +119,7 @@ void node_cleanup(struct node *n) {
 void node_list_cleanup(struct node *n) {
   if (!n)
     return;
+
   struct node *node = n;
   while (node) {
     struct node *buffer = node;
@@ -121,8 +133,10 @@ int node_unlink(struct node **head, struct node *n) {
     *head = n->next;
     return 0;
   }
+
   if (!head || !*head || !n)
     return 1;
+
   struct node *node = *head;
   struct node *node_prev = NULL;
   while (node && node != n) {
@@ -133,6 +147,7 @@ int node_unlink(struct node **head, struct node *n) {
   if (node_prev) {
     node_prev->next = n->next;
   }
+
   n->next = NULL;
   return 0;
 }
@@ -140,6 +155,7 @@ int node_unlink(struct node **head, struct node *n) {
 struct node *node_tail(struct node *n) {
   if (!n)
     return NULL;
+
   struct node *node;
   for (node = n; node->next; node = node->next);
   return node;
@@ -148,8 +164,10 @@ struct node *node_tail(struct node *n) {
 int node_add_value(struct node *n, int value) {
   if (!n)
     return 1;
+
   if (array_append(n->value, value))
     return 1;
+
   assert(array_get(n->value, array_size(n->value) - 1) == value);
   return 0;
 }
@@ -157,6 +175,7 @@ int node_add_value(struct node *n, int value) {
 struct node *node_find_key(struct node *n, const char *key) {
   if (!n || !key)
     return NULL;
+
   struct node *node = n;
   for (node = n; node && strcmp(key, node->key); node = node->next);
   return node;
@@ -181,11 +200,13 @@ struct table *table_init(unsigned long capacity,
   struct table *t = malloc(sizeof(struct table));
   if (!t)
     return NULL;
+
   struct node **array = calloc(capacity, sizeof(struct node*));
   if (!array) {
     free(t);
     return NULL;
   }
+
   t->array = array;
   t->hash_func = hash_func;
   t->max_load_factor = max_load_factor;
@@ -194,9 +215,57 @@ struct table *table_init(unsigned long capacity,
   return t;
 }
 
+/* Resize the table array to double the size.
+ *
+ */
+int table_resize(struct table *t) {
+  if (!t)
+    return 1;
+
+  struct node **array = calloc(t->capacity * 2, sizeof(struct node*));
+  if (!array)
+    return 1;
+  /* steps:
+   * 1. Go through every bucket and rehash the key for every element inside its linked list.
+   * 2. Calculate the index of every hash inside the new array.
+   * 3. Place every index.
+   * 4. Change the next pointer.
+   */
+  for (unsigned long i = 0; i < t->capacity; i++) {
+    struct node *n = t->array[i];
+    /* Iterate over all linked lists in the bucket. */
+    while (n) {
+      unsigned long index = calculate_array_index(t->hash_func, n->key, t->capacity * 2);
+      struct node *buffer = n;
+      if (!array[index]) {
+        /* This means that the bucket is still empty. */
+        array[index] = n;
+        n = n->next;
+        buffer->next = NULL;
+      } else {
+        /* This means that the bucket is already filled 
+        *  Add the node onto the head of the bucket. */
+        n = n->next;
+        buffer->next = array[index];
+        array[index] = buffer;
+      }
+    }
+  }
+
+  free(t->array);
+  t->array = array;
+  t->capacity *= 2;
+  return 0;
+}
+
 int table_insert(struct table *t, const char *key, int value) {
   if (!t || !key)
     return 1;
+
+  if (table_load_factor(t) > t->max_load_factor){
+    table_resize(t);
+  }
+
   unsigned long array_index = calculate_array_index(t->hash_func, key, t->capacity);
   struct node *n_head = t->array[array_index];
   if (!n_head) {
@@ -204,6 +273,7 @@ int table_insert(struct table *t, const char *key, int value) {
     struct node *n = node_init(key);
     if (!n)
       return 1;
+
     node_add_value(n, value);
     t->array[array_index] = n;
   } else {
@@ -222,35 +292,43 @@ int table_insert(struct table *t, const char *key, int value) {
       n_tail->next = n;
     }
   }
+
+  t->load++;
   return 0;
 }
 
 struct array *table_lookup(const struct table *t, const char *key) {
   if (!t || !key)
     return NULL;
+
   unsigned long array_index = calculate_array_index(t->hash_func, key, t->capacity);
   struct node *node_head = t->array[array_index];
   struct node *node = node_find_key(node_head, key);
   if (!node)
     return NULL;
+
   return node->value;
 }
 
 double table_load_factor(const struct table *t) {
-    /* ... SOME CODE MISSING HERE ... */
+  return ((double)t->load / (double)t->capacity);
 }
 
 int table_delete(struct table *t, const char *key) {
   if (!t || !key)
     return -1;
+
   unsigned long array_index = calculate_array_index(t->hash_func, key, t->capacity);
   struct node *head = t->array[array_index];
   struct node *node = node_find_key(head, key);
   if (!node)
     return 1;
+
   if (node_unlink(&(t->array[array_index]), node))
     return 1;
+
   node_cleanup(node);
+  t->load--;
   return 0;
 }
 
@@ -259,6 +337,7 @@ void table_array_cleanup(struct node **array, unsigned long capacity) {
   for (int i = 0; i < (int)capacity; i++) {
     node_list_cleanup(array[i]);
   }
+
   free(array);
 }
 

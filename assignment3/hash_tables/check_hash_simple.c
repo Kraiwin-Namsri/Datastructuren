@@ -13,8 +13,8 @@
 #ifndef ck_assert_ptr_null
 #define ck_assert_ptr_null(X) _ck_assert_ptr(X, ==, NULL)
 #endif
-
 /* Tests */
+
 
 /* test init/cleanup */
 START_TEST(test_init) {
@@ -91,11 +91,14 @@ START_TEST(test_add_chaining) {
     memcpy(c, "afg", sizeof(char) * 4);
     char *d = malloc(sizeof(char) * 4);
     memcpy(d, "ahi", sizeof(char) * 4);
+    char *e = malloc(sizeof(char) * 4);
+    memcpy(e, "chi", sizeof(char) * 4);
 
     ck_assert_int_eq(table_insert(t, a, 3), 0);
     ck_assert_int_eq(table_insert(t, b, 5), 0);
     ck_assert_int_eq(table_insert(t, c, 7), 0);
     ck_assert_int_eq(table_insert(t, d, 11), 0);
+    ck_assert_int_eq(table_insert(t, e, 321), 0);
 
     ck_assert_int_eq(array_get(table_lookup(t, a), 0), 3);
     ck_assert_int_eq(array_get(table_lookup(t, b), 0), 5);
@@ -107,6 +110,7 @@ START_TEST(test_add_chaining) {
     free(b);
     free(c);
     free(d);
+    free(e);
 }
 END_TEST
 
