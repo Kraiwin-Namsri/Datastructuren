@@ -117,7 +117,37 @@ START_TEST(test_duplicates) {
 }
 END_TEST
 
-/* Duplicates are not allowed */
+/* This is a very simple test just to loosely verify that it is not completely broken */
+START_TEST(test_tree_check) {
+  struct tree *t = tree_init(0);
+  ck_assert_ptr_nonnull(t);
+
+  for (int i = 0; i < 100; i++) {
+    int val;
+    if (i % 2) {
+      val = i;
+    } else {
+      val = -i;
+    }
+    ck_assert_int_eq(tree_insert(t, val), 0);
+    ck_assert_int_eq(tree_check(t), 0);
+  }
+
+  for (int i = 1; i < 100; i+=6) {
+    int val;
+    if (i % 2) {
+      val = i;
+    } else {
+      val = -i;
+    }
+    ck_assert_int_eq(tree_remove(t, val), 0);
+    ck_assert_int_eq(tree_check(t), 0);
+  }
+
+  tree_cleanup(t);
+}
+
+/* Slowness is not allowed */
 START_TEST(test_worst_case) {
   struct tree *t = tree_init(0);
   ck_assert_ptr_nonnull(t);
@@ -126,7 +156,6 @@ START_TEST(test_worst_case) {
     ck_assert_int_eq(tree_insert(t, i), 0);
   }
 
-  tree_dot(t, "tree.dot");
   tree_cleanup(t);
 }
 END_TEST
@@ -149,6 +178,7 @@ Suite *tree_suite(void) {
     tcase_add_test(tc_core, test_remove_not_found);
     tcase_add_test(tc_core, test_find);
     tcase_add_test(tc_core, test_duplicates);
+    tcase_add_test(tc_core, test_tree_check);
     tcase_add_test(tc_core, test_worst_case);
 
     suite_add_tcase(s, tc_core);

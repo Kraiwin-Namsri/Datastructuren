@@ -62,6 +62,5 @@ void set_print(const struct set *s) {
 }
 
 int set_verify(const struct set *s) {
-    /* ... OPTIONALLY IMPLEMENT SET CHECKING HERE ... */
-    return 0;
+  return tree_check(s->tree);
 }

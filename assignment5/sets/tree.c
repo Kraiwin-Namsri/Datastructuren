@@ -22,6 +22,8 @@ struct node {
   struct node *lhs;
   struct node *rhs;
   unsigned long height;
+  unsigned long rhs_height;
+  unsigned long lhs_height;
 };
 typedef struct node node;
 
@@ -39,6 +41,9 @@ static node *make_node(int data){
   n->data = data;
   n->lhs = NULL;
   n->rhs = NULL;
+  n->height = 0;
+  n->rhs_height = 0;
+  n->lhs_height = 0;
   return n;
 }
 
@@ -77,9 +82,52 @@ void tree_dot(const struct tree *tree, const char *filename) {
   fclose(dotf);
 }
 
-int tree_check(const struct tree *tree) {
-  /* ... OPTIONALLY IMPLEMENT TREE CHECKING HERE ... */
+int node_run_forevery(node *n, int(*f)(node *n)) {
+  if (!n)
+    return 0;
+
+  if (f(n))
+    return 1;
+
+  int ret = 0;
+  ret = ret || node_run_forevery(n->rhs, f);
+  ret = ret || node_run_forevery(n->lhs, f);
+  return ret;
+}
+
+int node_check_height(node *n) {
+  if (!n)
+    return 0;
+
+  if (n->rhs && (n->height + 1 != n->rhs->height)) {
+    return 1;
+  }
+
+  if (n->lhs && (n->height + 1 != n->lhs->height)) {
+    return 1;
+  }
+
   return 0;
+}
+
+int node_check_BST_property(node *n) {
+  if (!n)
+    return 0;
+
+  if (n->rhs && (n->data > n->rhs->data))
+    return 1;
+
+  if (n->lhs && (n->data < n->lhs->data))
+    return 1;
+
+  return 0;
+}
+
+int tree_check(const struct tree *tree) {
+  int ret = 0;
+  ret = ret || node_run_forevery(tree->root, node_check_height); 
+  ret = ret || node_run_forevery(tree->root, node_check_BST_property);
+  return ret;
 }
 
 struct tree *tree_init(int turbo) {
@@ -92,8 +140,7 @@ struct tree *tree_init(int turbo) {
   return tree;
 }
 
-/* This function is for debugging only! 
- * Sets all the heights of a tree recursivly. 
+/* Sets all the heights of a tree recursivly. 
  */
 static int recalc_tree_height(node *n, unsigned long height) {
   if (!n)
@@ -130,31 +177,36 @@ static int tree_balance(node *n) {
 /* Recursivly finds the spot where to insert m, and inserts.
  * n: the parent.
  * m: the child to insert.
+ * height: a pointer to the height of the branch.
  * Returns -1 on error, 0 on succes, 1 if a node with the same value already exists. 
  */
-static int node_insert(node *n, node *m) {
+static int node_insert(node *n, node *m, unsigned long *height) {
   if (!m || !n)
     return -1;
 
   if (m->data == n->data)
     return 1;
   
+  int ret;
+  m->height = n->height + 1;
   if (m->data > n->data) {
     if (!n->rhs){
       n->rhs = m;
+      n->rhs_height = 0;
       return 0;
     }
 
-    return node_insert(n->rhs, m);
+    ret = node_insert(n->rhs, m, &n->rhs_height);
   } else {
-    /* This means that: m->data < n->data */
     if (!n->lhs) {
       n->lhs = m;
+      n->lhs_height = 0;
       return 0;
     }
 
-    return node_insert(n->lhs, m);
+    ret = node_insert(n->lhs, m, &n->lhs_height);
   }
+  return ret;
 }
 
 int tree_insert(struct tree *tree, int data) {
@@ -170,7 +222,8 @@ int tree_insert(struct tree *tree, int data) {
     return 0;
   }
 
-  int ret = node_insert(tree->root, m);
+  /* TODO: Make sure the correct height branch*/
+  int ret = node_insert(tree->root, m, &m->rhs_height);
   if (ret)
     free(m);
 
@@ -239,11 +292,13 @@ static int node_remove(node **n, int data) {
     } else if (!((*n)->rhs && (*n)->lhs)) {
       /* This means that there is only 1 child. */
       node *child = (*n)->rhs ? (*n)->rhs : (*n)->lhs;
+      recalc_tree_height(child, (*n)->height);
       free(*n);
       *n = child;
     } else {
       /* This means that n has 2 childs. */
       node *rightmost = node_unlink_rightmost(&(*n)->lhs);
+      recalc_tree_height(rightmost, (*n)->height);
       free(*n);
       *n = rightmost;
     }
