@@ -9,6 +9,8 @@
 
 #include "tree.h"
 
+#define MAX_DELTA_LENGTH 1
+
 /* C files can be modified anywhere.
  * So you can change or remove these structs to suit your needs. */
 struct tree {
@@ -46,7 +48,7 @@ static node *make_node(int data){
   return n;
 }
 
-long max(long x, long y) {
+static long max(long x, long y) {
   return x > y ? x : y;
 }
 
@@ -58,7 +60,7 @@ static int print_tree_dot_r(node *root, FILE *dotf) {
     return my_id;
   }
 
-  fprintf(dotf, "    %d [color=%s label=\"d: %d\nr: %lu\n l: %lu\"]\n", my_id, "black", root->data, root->rhs_length, root->lhs_length);
+  fprintf(dotf, "    %d [color=%s label=\"d: %d\nl: %lu r: %lu\"]\n", my_id, "black", root->data, root->lhs_length, root->rhs_length);
 
   left_id = print_tree_dot_r(root->lhs, dotf);
   fprintf(dotf, "    %d -> %d [label=\"l\"]\n", my_id, left_id);
@@ -85,7 +87,7 @@ void tree_dot(const struct tree *tree, const char *filename) {
   fclose(dotf);
 }
 
-int node_run_forevery(node *n, int(*f)(node *n)) {
+static int node_run_forevery(node *n, int(*f)(node *n)) {
   if (!n)
     return 0;
 
@@ -98,22 +100,20 @@ int node_run_forevery(node *n, int(*f)(node *n)) {
   return ret;
 }
 
-int node_check_height(node *n) {
+static int node_check_height(node *n) {
   if (!n)
     return 0;
 
-  if (n->rhs && (n->height + 1 != n->rhs->height)) {
+  if (n->rhs && (n->height + 1 != n->rhs->height))
     return 1;
-  }
+  if (n->lhs && (n->height + 1 != n->lhs->height))
 
-  if (n->lhs && (n->height + 1 != n->lhs->height)) {
     return 1;
-  }
 
   return 0;
 }
 
-int node_check_BST_property(node *n) {
+static int node_check_BST_property(node *n) {
   if (!n)
     return 0;
 
@@ -126,35 +126,45 @@ int node_check_BST_property(node *n) {
   return 0;
 }
 
-int node_check_length(node *n) {
+static int node_check_length(node *n) {
   if (!n)
     return 0;
 
-  if (n->rhs && n->rhs_length != (unsigned long)max((long)n->rhs->rhs_length, (long)n->rhs->lhs_length) + 1){
+  if (n->rhs && n->rhs_length != (unsigned long)max((long)n->rhs->rhs_length, (long)n->rhs->lhs_length) + 1)
     return 1;
-  }
 
-  if (!n->rhs && n->rhs_length != 0) {
+  if (!n->rhs && n->rhs_length != 0)
     return 1;
-  }
 
-  if (n->lhs && n->lhs_length != (unsigned long)max((long)n->lhs->rhs_length, (long)n->lhs->lhs_length) + 1){
+  if (n->lhs && n->lhs_length != (unsigned long)max((long)n->lhs->rhs_length, (long)n->lhs->lhs_length) + 1)
     return 1;
-  }
 
-  if (!n->lhs && n->lhs_length != 0) {
+  if (!n->lhs && n->lhs_length != 0)
     return 1;
-  }
   
   return 0;
 }
 
+static int node_check_AVL_property(node *n) {
+  if (!n)
+    return 0;
+
+  if (labs((long)n->lhs_length - (long)n->rhs_length) > MAX_DELTA_LENGTH)
+    return 1;
+
+  return 0;
+}
+
 int tree_check(const struct tree *tree) {
-  int ret = 0;
-  ret = ret || node_run_forevery(tree->root, node_check_height); 
-  ret = ret || node_run_forevery(tree->root, node_check_BST_property);
-  ret = ret || node_run_forevery(tree->root, node_check_length);
-  return ret;
+  if (node_run_forevery(tree->root, node_check_height))
+    return 1;
+  if (node_run_forevery(tree->root, node_check_BST_property))
+    return 2;
+  if (node_run_forevery(tree->root, node_check_length))
+    return 3;
+  if (node_run_forevery(tree->root, node_check_AVL_property))
+    return 4;
+  return 0;
 }
 
 struct tree *tree_init(int turbo) {
@@ -192,7 +202,7 @@ static int get_tree_height(node *n) {
  *  -1 on a left-heavy tree.
  *  0 on a balanced tree.
  *  1 on a right-heavy tree.
- * */
+ */
 static int calculate_tree_balance(node *n) {
 
 }
@@ -258,7 +268,6 @@ int tree_insert(struct tree *tree, int data) {
     return 0;
   }
 
-  // unsigned long *length = data > tree->root->data ? &(tree->root->rhs_length) : &(tree->root->rhs_length);
   int ret = node_insert(tree->root, m, NULL);
   if (ret)
     free(m);
@@ -314,10 +323,11 @@ static node *node_unlink_rightmost(node **n) {
 /* Recursivly removes the node n
  * Sets n to the value.
  */
-static int node_remove(node **n, int data) {
-  if (!n || !*n)
+static int node_remove(node **n, int data, unsigned long *length) {
+  if (!n || !(*n))
     return 1;
 
+  int ret;
   if ((*n)->data == data) {
     /* We found the correct node to remove. */
 
@@ -338,25 +348,38 @@ static int node_remove(node **n, int data) {
       free(*n);
       *n = rightmost;
     }
-    return 0;
+
+    ret = 0;
+  } else {
+    /* We have not found the correct node to remove yet. */
+    if (data > (*n)->data) {
+      ret = node_remove(&(*n)->rhs, data, &(*n)->rhs_length);
+    } else {
+      ret = node_remove(&(*n)->lhs, data, &(*n)->lhs_length);
+    }
   }
 
-  /* We have not found the correct node to remove yet. */
-  if (data > (*n)->data) {
-    return node_remove(&(*n)->rhs, data);
-  } else {
-    return node_remove(&(*n)->lhs, data);
-  }
+  if (n && (*n) && !ret && length != &((*n)->rhs_length) && length != &((*n)->lhs_length))
+    *length = (unsigned long)max((long)(*n)->rhs_length, (long)(*n)->lhs_length) + 1;
+
+  if ((length == &((*n)->rhs_length) || length == &((*n)->lhs_length)) && !((*n)->rhs || (*n)->lhs))
+    *length = 0;
+
+  return ret;
 }
 
 int tree_remove(struct tree *tree, int data) {
   if (!tree)
     return -1;
   
-  return node_remove(&tree->root, data);
+  if (!tree->root)
+    return 1;
+
+  unsigned long *length = data > tree->root->data ? &(tree->root->rhs_length) : &(tree->root->lhs_length);
+  return node_remove(&tree->root, data, length);
 }
 
-void node_in_order_traversal(node *n) {
+static void node_in_order_traversal(node *n) {
   if (!n)
     return;
 
@@ -374,7 +397,7 @@ void tree_print(const struct tree *tree) {
 
 /* Cleans the left and right subtree of n 
  */
-void clean_subtree(node *n) {
+static void clean_subtree(node *n) {
   if (!n)
     return;
 

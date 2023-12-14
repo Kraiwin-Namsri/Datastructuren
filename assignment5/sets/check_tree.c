@@ -53,7 +53,7 @@ START_TEST(test_tree_inserts) {
     ck_assert_int_eq(tree_insert(t, 9), 0);
     ck_assert_int_eq(tree_insert(t, 8), 0);
     ck_assert_int_eq(tree_insert(t, 7), 0);
-    // tree_dot(t, "tree.dot");
+    tree_dot(t, "tree.dot");
     tree_cleanup(t);
 }
 END_TEST
@@ -72,12 +72,14 @@ END_TEST
 
 /* test remove */
 START_TEST(test_remove) {
-    struct tree *t = tree_init(0);
-    ck_assert_ptr_nonnull(t);
-    ck_assert_int_eq(tree_insert(t, 1), 0);
-    ck_assert_int_eq(tree_insert(t, 2), 0);
-    ck_assert_int_eq(tree_remove(t, 2), 0);
-    tree_cleanup(t);
+  struct tree *t = tree_init(0);
+  ck_assert_ptr_nonnull(t);
+  ck_assert_int_eq(tree_insert(t, 1), 0);
+  ck_assert_int_eq(tree_insert(t, 2), 0);
+  ck_assert_int_eq(tree_insert(t, 3), 0);
+  ck_assert_int_eq(tree_remove(t, 2), 0);
+  tree_dot(t, "tree.dot");
+  tree_cleanup(t);
 }
 END_TEST
 
@@ -161,7 +163,7 @@ START_TEST(test_worst_case) {
     ck_assert_int_eq(tree_insert(t, i), 0);
   }
 
-  // tree_dot(t, "tree.dot");
+  tree_dot(t, "tree.dot");
   tree_cleanup(t);
 }
 END_TEST

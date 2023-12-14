@@ -61,11 +61,13 @@ int main(void) {
         set_print(s);
         break;
     }
+    
+    // int ret = set_verify(s);
+    // if (ret) { /* debug function */
+    //   fprintf(stderr, "Set implementation failed verification: %d!\n", ret);
+    // }
   }
 
-  if (set_verify(s)) { /* debug function */
-    fprintf(stderr, "Set implementation failed verification!\n");
-  }
   free(buf);
   set_cleanup(s);
   return EXIT_SUCCESS;
