@@ -58,6 +58,7 @@ void set_print(const struct set *s) {
   if (!s)
     return;
 
+  tree_dot(s->tree, "tree.dot");
   tree_print(s->tree);
 }
 

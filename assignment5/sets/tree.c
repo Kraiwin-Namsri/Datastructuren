@@ -2,13 +2,12 @@
  * UvAID: 15032094
  */
 
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include "tree.h"
-
-#define MAX(X, Y) (((X) < (Y) ? (X) : (Y)))
 
 /* C files can be modified anywhere.
  * So you can change or remove these structs to suit your needs. */
@@ -22,8 +21,8 @@ struct node {
   struct node *lhs;
   struct node *rhs;
   unsigned long height;
-  unsigned long rhs_height;
-  unsigned long lhs_height;
+  unsigned long rhs_length;
+  unsigned long lhs_length;
 };
 typedef struct node node;
 
@@ -42,9 +41,13 @@ static node *make_node(int data){
   n->lhs = NULL;
   n->rhs = NULL;
   n->height = 0;
-  n->rhs_height = 0;
-  n->lhs_height = 0;
+  n->rhs_length = 0;
+  n->lhs_length = 0;
   return n;
+}
+
+long max(long x, long y) {
+  return x > y ? x : y;
 }
 
 static int print_tree_dot_r(node *root, FILE *dotf) {
@@ -55,7 +58,7 @@ static int print_tree_dot_r(node *root, FILE *dotf) {
     return my_id;
   }
 
-  fprintf(dotf, "    %d [color=%s label=\"d: %d\nh: %lu\"]\n", my_id, "black", root->data, root->height);
+  fprintf(dotf, "    %d [color=%s label=\"d: %d\nr: %lu\n l: %lu\"]\n", my_id, "black", root->data, root->rhs_length, root->lhs_length);
 
   left_id = print_tree_dot_r(root->lhs, dotf);
   fprintf(dotf, "    %d -> %d [label=\"l\"]\n", my_id, left_id);
@@ -123,10 +126,34 @@ int node_check_BST_property(node *n) {
   return 0;
 }
 
+int node_check_length(node *n) {
+  if (!n)
+    return 0;
+
+  if (n->rhs && n->rhs_length != (unsigned long)max((long)n->rhs->rhs_length, (long)n->rhs->lhs_length) + 1){
+    return 1;
+  }
+
+  if (!n->rhs && n->rhs_length != 0) {
+    return 1;
+  }
+
+  if (n->lhs && n->lhs_length != (unsigned long)max((long)n->lhs->rhs_length, (long)n->lhs->lhs_length) + 1){
+    return 1;
+  }
+
+  if (!n->lhs && n->lhs_length != 0) {
+    return 1;
+  }
+  
+  return 0;
+}
+
 int tree_check(const struct tree *tree) {
   int ret = 0;
   ret = ret || node_run_forevery(tree->root, node_check_height); 
   ret = ret || node_run_forevery(tree->root, node_check_BST_property);
+  ret = ret || node_run_forevery(tree->root, node_check_length);
   return ret;
 }
 
@@ -147,7 +174,8 @@ static int recalc_tree_height(node *n, unsigned long height) {
     return -1;
 
   n->height = height;
-  return MAX(recalc_tree_height(n->rhs, height + 1), recalc_tree_height(n->lhs, height + 1));
+  return (int)max((long)recalc_tree_height(n->rhs, height + 1),
+                  (long)recalc_tree_height(n->lhs, height + 1));
 }
 
 /* This function is for debugging only!
@@ -156,7 +184,7 @@ static int get_tree_height(node *n) {
   if (!n)
     return -1;
 
-  return MAX(get_tree_height(n->rhs), get_tree_height(n->lhs));
+  return (int)max((long)get_tree_height(n->rhs), (long)get_tree_height(n->lhs));
 }
 
 /* Calculates the balance of a tree, with n being a root.
@@ -174,13 +202,14 @@ static int tree_balance(node *n) {
 
 }
 
+
 /* Recursivly finds the spot where to insert m, and inserts.
  * n: the parent.
  * m: the child to insert.
  * height: a pointer to the height of the branch.
  * Returns -1 on error, 0 on succes, 1 if a node with the same value already exists. 
  */
-static int node_insert(node *n, node *m, unsigned long *height) {
+static int node_insert(node *n, node *m, unsigned long *length) {
   if (!m || !n)
     return -1;
 
@@ -192,20 +221,27 @@ static int node_insert(node *n, node *m, unsigned long *height) {
   if (m->data > n->data) {
     if (!n->rhs){
       n->rhs = m;
-      n->rhs_height = 0;
-      return 0;
+      n->rhs_length = (unsigned long)max((long)m->rhs_length, (long)m->lhs_length) + 1;
+      ret = 0;
+    } else {
+      ret = node_insert(n->rhs, m, &(n->rhs_length));
     }
 
-    ret = node_insert(n->rhs, m, &n->rhs_height);
   } else {
     if (!n->lhs) {
       n->lhs = m;
-      n->lhs_height = 0;
-      return 0;
+      n->lhs_length = (unsigned long)max((long)m->rhs_length, (long)m->lhs_length) + 1;
+      ret = 0;
+    } else {
+      ret = node_insert(n->lhs, m, &(n->lhs_length));
     }
 
-    ret = node_insert(n->lhs, m, &n->lhs_height);
   }
+
+  if (length) {
+    *length = (unsigned long)max((long)n->rhs_length, (long)n->lhs_length) + 1;
+  }
+
   return ret;
 }
 
@@ -222,8 +258,8 @@ int tree_insert(struct tree *tree, int data) {
     return 0;
   }
 
-  /* TODO: Make sure the correct height branch*/
-  int ret = node_insert(tree->root, m, &m->rhs_height);
+  // unsigned long *length = data > tree->root->data ? &(tree->root->rhs_length) : &(tree->root->rhs_length);
+  int ret = node_insert(tree->root, m, NULL);
   if (ret)
     free(m);
 
