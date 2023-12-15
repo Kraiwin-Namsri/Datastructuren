@@ -1,3 +1,10 @@
+/* Name: Kraiwin Namsri
+ * UvAID: 15032094
+ *
+ * These are some custom test for a binary search tree.
+ * TEAMTREES
+ */
+
 #include <check.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -53,7 +60,7 @@ START_TEST(test_tree_inserts) {
     ck_assert_int_eq(tree_insert(t, 9), 0);
     ck_assert_int_eq(tree_insert(t, 8), 0);
     ck_assert_int_eq(tree_insert(t, 7), 0);
-    tree_dot(t, "tree.dot");
+    // tree_dot(t, "tree.dot");
     tree_cleanup(t);
 }
 END_TEST
@@ -78,7 +85,7 @@ START_TEST(test_remove) {
   ck_assert_int_eq(tree_insert(t, 2), 0);
   ck_assert_int_eq(tree_insert(t, 3), 0);
   ck_assert_int_eq(tree_remove(t, 2), 0);
-  tree_dot(t, "tree.dot");
+  // tree_dot(t, "tree.dot");
   tree_cleanup(t);
 }
 END_TEST
@@ -123,10 +130,37 @@ START_TEST(test_duplicates) {
 }
 END_TEST
 
-/* This is a very simple test just to loosely verify that it is not completely broken */
+START_TEST(test_huh) {
+  struct tree *t = tree_init(0);
+  ck_assert_ptr_nonnull(t);
+
+  for (int i = 0; i < 3; i++) {
+    ck_assert_int_eq(tree_insert(t, i), 0);
+    ck_assert_int_eq(tree_check(t), 0);
+  }
+
+  tree_cleanup(t);
+}
+END_TEST
+
+
+/* This is a test that tests if tree_check functions works for some cases. */
 START_TEST(test_tree_check) {
   struct tree *t = tree_init(0);
   ck_assert_ptr_nonnull(t);
+
+  ck_assert_int_eq(tree_insert(t, 2), 0);
+  ck_assert_int_eq(tree_check(t), 0);
+
+  ck_assert_int_eq(tree_insert(t, 1), 0);
+  ck_assert_int_eq(tree_check(t), 0);
+
+  ck_assert_int_eq(tree_remove(t, 1), 0);
+  ck_assert_int_eq(tree_check(t), 0);
+
+  ck_assert_int_eq(tree_remove(t, 2), 0);
+  ck_assert_int_eq(tree_check(t), 0);
+
 
   for (int i = 0; i < 100; i++) {
     int val;
@@ -138,9 +172,8 @@ START_TEST(test_tree_check) {
     ck_assert_int_eq(tree_insert(t, val), 0);
     ck_assert_int_eq(tree_check(t), 0);
   }
-  // tree_dot(t, "tree.dot");
 
-  for (int i = 1; i < 100; i+=6) {
+  for (int i = 1; i < 100; i++) {
     int val;
     if (i % 2) {
       val = i;
@@ -154,6 +187,7 @@ START_TEST(test_tree_check) {
   tree_cleanup(t);
 }
 
+
 /* Slowness is not allowed */
 START_TEST(test_worst_case) {
   struct tree *t = tree_init(0);
@@ -163,7 +197,7 @@ START_TEST(test_worst_case) {
     ck_assert_int_eq(tree_insert(t, i), 0);
   }
 
-  tree_dot(t, "tree.dot");
+  // tree_dot(t, "tree.dot");
   tree_cleanup(t);
 }
 END_TEST
@@ -186,6 +220,7 @@ Suite *tree_suite(void) {
     tcase_add_test(tc_core, test_remove_not_found);
     tcase_add_test(tc_core, test_find);
     tcase_add_test(tc_core, test_duplicates);
+    // tcase_add_test(tc_core, test_huh);
     tcase_add_test(tc_core, test_tree_check);
     tcase_add_test(tc_core, test_worst_case);
 

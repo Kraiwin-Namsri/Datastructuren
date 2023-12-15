@@ -1,18 +1,21 @@
 /* Name: Kraiwin Namsri
  * UvAID: 15032094
+ *
+ * This is an implementation of a tree:
+ * I tried to implement AVL tree, but not finished: https://en.wikipedia.org/wiki/AVL_tree
  */
 
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <assert.h>
 
 #include "tree.h"
 
 #define MAX_DELTA_LENGTH 1
+// #define DEBUG
 
-/* C files can be modified anywhere.
- * So you can change or remove these structs to suit your needs. */
 struct tree {
   struct node *root;
   int turbo;
@@ -48,6 +51,7 @@ static node *make_node(int data){
   return n;
 }
 
+/* Returns the max of x and y (Could be replaced with a MACRO) */
 static long max(long x, long y) {
   return x > y ? x : y;
 }
@@ -87,12 +91,14 @@ void tree_dot(const struct tree *tree, const char *filename) {
   fclose(dotf);
 }
 
+/* A function that runs a functions for every node */
 static int node_run_forevery(node *n, int(*f)(node *n)) {
   if (!n)
     return 0;
 
-  if (f(n))
-    return 1;
+  int f_ret = f(n);
+  if (f_ret)
+    return f_ret;
 
   int ret = 0;
   ret = ret || node_run_forevery(n->rhs, f);
@@ -100,6 +106,7 @@ static int node_run_forevery(node *n, int(*f)(node *n)) {
   return ret;
 }
 
+/* A test function that checks the height of a node and its children. */
 static int node_check_height(node *n) {
   if (!n)
     return 0;
@@ -113,6 +120,7 @@ static int node_check_height(node *n) {
   return 0;
 }
 
+/* A test function that checkt the BST property of a node and its children. */
 static int node_check_BST_property(node *n) {
   if (!n)
     return 0;
@@ -126,6 +134,7 @@ static int node_check_BST_property(node *n) {
   return 0;
 }
 
+/* A test function that check if the distance to the leaf is correct. */
 static int node_check_length(node *n) {
   if (!n)
     return 0;
@@ -145,25 +154,81 @@ static int node_check_length(node *n) {
   return 0;
 }
 
+
+/* Rotate a n and n->lhs to the right*/
+void node_rotate_right(node **n) {
+  node *lhs_child = (*n)->rhs;
+  assert(lhs_child);
+  (*n)->lhs = lhs_child->rhs;
+  lhs_child->rhs = *n;
+  *n = lhs_child;
+}
+
+/* Rotate n and n->rhs to the left */
+void node_rotate_left(node **n) {
+  if (n || *n)
+    return;
+
+  node *rhs_child = (*n)->rhs;
+  assert(rhs_child);
+  (*n)->rhs = rhs_child->lhs;
+  rhs_child->lhs = *n;
+  *n = rhs_child;
+}
+
+#ifdef DEBUG
+/* A funtion that returns the difference between the rhs en lhs length. */
+static long calculate_node_balance(node *n) {
+  return (long)n->rhs_length - (long)n->lhs_length;
+}
+#endif
+
+#ifdef DEBUG
+/* A test function that check the AVL property of node n and its children. */
 static int node_check_AVL_property(node *n) {
   if (!n)
     return 0;
 
-  if (labs((long)n->lhs_length - (long)n->rhs_length) > MAX_DELTA_LENGTH)
+  if (calculate_node_balance(n) > MAX_DELTA_LENGTH)
     return 1;
 
   return 0;
 }
+#endif
 
 int tree_check(const struct tree *tree) {
+#ifdef DEBUG
+  static int check_rotate = 1;
+  if (check_rotate) {
+    check_rotate = 0;
+    struct tree *t = tree_init(0);
+    if (!t)
+      return -1;
+    for (int i = 0; i < 6; i += 2) {
+      tree_insert(t, i);
+    }
+    tree_insert(t, 1);
+    tree_insert(t, -1);
+
+    node_rotate_right(&(t->root));
+
+    tree_dot(t, "tree.dot");
+
+    tree_cleanup(t);
+  }
+#endif
+
   if (node_run_forevery(tree->root, node_check_height))
     return 1;
   if (node_run_forevery(tree->root, node_check_BST_property))
     return 2;
   if (node_run_forevery(tree->root, node_check_length))
     return 3;
-  if (node_run_forevery(tree->root, node_check_AVL_property))
+#ifdef DEBUG
+  if (node_run_forevery(tree->root, node_check_AVL_property)) {
     return 4;
+  }
+#endif
   return 0;
 }
 
@@ -177,8 +242,8 @@ struct tree *tree_init(int turbo) {
   return tree;
 }
 
-/* Sets all the heights of a tree recursivly. 
- */
+
+/* Sets all the heights of a tree recursivly. */
 static int recalc_tree_height(node *n, unsigned long height) {
   if (!n)
     return -1;
@@ -188,6 +253,7 @@ static int recalc_tree_height(node *n, unsigned long height) {
                   (long)recalc_tree_height(n->lhs, height + 1));
 }
 
+#ifdef DEBUG
 /* This function is for debugging only!
  * Gets the heights of a node recursivly. */
 static int get_tree_height(node *n) {
@@ -196,61 +262,70 @@ static int get_tree_height(node *n) {
 
   return (int)max((long)get_tree_height(n->rhs), (long)get_tree_height(n->lhs));
 }
+#endif 
 
 /* Calculates the balance of a tree, with n being a root.
  * Returns:
- *  -1 on a left-heavy tree.
+ *  <0 on a left-heavy tree.
  *  0 on a balanced tree.
- *  1 on a right-heavy tree.
+ *  >0 on a right-heavy tree.
  */
-static int calculate_tree_balance(node *n) {
 
-}
 
+#ifdef DEBUG
 /* Rebalances the tree. */
-static int tree_balance(node *n) {
-
+static void node_balance(node **n) {
+  long balance = calculate_node_balance(*n);
+  if (balance > MAX_DELTA_LENGTH) {
+    node_rotate_left(n);
+  } else if (balance < -MAX_DELTA_LENGTH) {
+    node_rotate_right(n);
+  }
 }
+#endif /* ifdef DEBUG */
 
-
-/* Recursivly finds the spot where to insert m, and inserts.
+/* Recursivly finds the spot where to insert m, and inserts. At the same time it updates heights and lengths.
  * n: the parent.
  * m: the child to insert.
- * height: a pointer to the height of the branch.
+ * length: a pointer to the length till the deepest leaf of the branch.
  * Returns -1 on error, 0 on succes, 1 if a node with the same value already exists. 
  */
-static int node_insert(node *n, node *m, unsigned long *length) {
+static int node_insert(node **n, node *m, unsigned long *length) {
   if (!m || !n)
     return -1;
 
-  if (m->data == n->data)
+  if (m->data == (*n)->data)
     return 1;
   
   int ret;
-  m->height = n->height + 1;
-  if (m->data > n->data) {
-    if (!n->rhs){
-      n->rhs = m;
-      n->rhs_length = (unsigned long)max((long)m->rhs_length, (long)m->lhs_length) + 1;
+  m->height = (*n)->height + 1;
+  if (m->data > (*n)->data) {
+    if (!(*n)->rhs){
+      (*n)->rhs = m;
+      (*n)->rhs_length = (unsigned long)max((long)m->rhs_length, (long)m->lhs_length) + 1;
       ret = 0;
     } else {
-      ret = node_insert(n->rhs, m, &(n->rhs_length));
+      ret = node_insert(&(*n)->rhs, m, &(*n)->rhs_length);
     }
 
   } else {
-    if (!n->lhs) {
-      n->lhs = m;
-      n->lhs_length = (unsigned long)max((long)m->rhs_length, (long)m->lhs_length) + 1;
+    if (!(*n)->lhs) {
+      (*n)->lhs = m;
+      (*n)->lhs_length = (unsigned long)max((long)m->rhs_length, (long)m->lhs_length) + 1;
       ret = 0;
     } else {
-      ret = node_insert(n->lhs, m, &(n->lhs_length));
+      ret = node_insert(&(*n)->lhs, m, &(*n)->lhs_length);
     }
 
   }
 
   if (length) {
-    *length = (unsigned long)max((long)n->rhs_length, (long)n->lhs_length) + 1;
+    *length = (unsigned long)max((long)(*n)->rhs_length, (long)(*n)->lhs_length) + 1;
   }
+
+#ifdef DEBUG
+  node_balance(n);
+#endif
 
   return ret;
 }
@@ -268,7 +343,7 @@ int tree_insert(struct tree *tree, int data) {
     return 0;
   }
 
-  int ret = node_insert(tree->root, m, NULL);
+  int ret = node_insert(&(tree->root), m, NULL);
   if (ret)
     free(m);
 
@@ -307,6 +382,7 @@ int tree_find(struct tree *tree, int data) {
   return node_find(tree->root, data);
 }
 
+/* Recursivly find the rightmost node and unlink it */
 static node *node_unlink_rightmost(node **n) {
   if (!n || !(*n))
     return NULL;
@@ -322,48 +398,51 @@ static node *node_unlink_rightmost(node **n) {
 
 /* Recursivly removes the node n
  * Sets n to the value.
+ * n: A pointer to the pointernode of the root.
+ * data: the data to remove.
+ * length: A pointer to the length of the previous node (Recursive previous).
  */
 static int node_remove(node **n, int data, unsigned long *length) {
   if (!n || !(*n))
     return 1;
 
-  int ret;
   if ((*n)->data == data) {
     /* We found the correct node to remove. */
 
     if (!(*n)->rhs && !(*n)->lhs) {
       /* This means that n is a leaf. */
+      *length = (unsigned long)max((long)(*n)->rhs_length, (long)(*n)->lhs_length);
       free(*n);
       *n = NULL;
     } else if (!((*n)->rhs && (*n)->lhs)) {
       /* This means that there is only 1 child. */
       node *child = (*n)->rhs ? (*n)->rhs : (*n)->lhs;
       recalc_tree_height(child, (*n)->height);
+      *length = (unsigned long)max((long)(*n)->rhs_length, (long)(*n)->lhs_length);
       free(*n);
       *n = child;
     } else {
       /* This means that n has 2 childs. */
       node *rightmost = node_unlink_rightmost(&(*n)->lhs);
       recalc_tree_height(rightmost, (*n)->height);
+      *length = (unsigned long)max((long)(*n)->rhs_length, (long)(*n)->lhs_length);
       free(*n);
       *n = rightmost;
     }
 
-    ret = 0;
-  } else {
-    /* We have not found the correct node to remove yet. */
-    if (data > (*n)->data) {
-      ret = node_remove(&(*n)->rhs, data, &(*n)->rhs_length);
-    } else {
-      ret = node_remove(&(*n)->lhs, data, &(*n)->lhs_length);
-    }
+    return 0;
   }
 
-  if (n && (*n) && !ret && length != &((*n)->rhs_length) && length != &((*n)->lhs_length))
-    *length = (unsigned long)max((long)(*n)->rhs_length, (long)(*n)->lhs_length) + 1;
+  /* We have not found the correct node to remove yet. */
+  int ret;
+  if (data > (*n)->data) {
+    ret = node_remove(&(*n)->rhs, data, &(*n)->rhs_length);
+  } else {
+    ret = node_remove(&(*n)->lhs, data, &(*n)->lhs_length);
+  }
 
-  if ((length == &((*n)->rhs_length) || length == &((*n)->lhs_length)) && !((*n)->rhs || (*n)->lhs))
-    *length = 0;
+  if (length != &((*n)->rhs_length) && length != &((*n)->lhs_length))
+    *length = (unsigned long)max((long)(*n)->rhs_length, (long)(*n)->lhs_length) + 1;
 
   return ret;
 }
@@ -379,6 +458,7 @@ int tree_remove(struct tree *tree, int data) {
   return node_remove(&tree->root, data, length);
 }
 
+/* Traverse nodes in order recursivly and print the data to stdout */
 static void node_in_order_traversal(node *n) {
   if (!n)
     return;
@@ -395,19 +475,16 @@ void tree_print(const struct tree *tree) {
   node_in_order_traversal(tree->root);
 }
 
-/* Cleans the left and right subtree of n 
- */
+/* Cleans the left and right subtree of n */
 static void clean_subtree(node *n) {
   if (!n)
     return;
 
-  if (n->lhs) {
+  if (n->lhs)
     clean_subtree(n->lhs);
-  }
 
-  if (n->rhs) {
+  if (n->rhs)
     clean_subtree(n->rhs);
-  }
 
   free(n);
 }

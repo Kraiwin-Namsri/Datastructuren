@@ -1,3 +1,8 @@
+/* Name: Kraiwin Namsri
+ * UvAID: 15032094
+ *
+ * This is an implementation of a set using the AVL tree: https://en.wikipedia.org/wiki/AVL_tree
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

@@ -1,3 +1,9 @@
+/* Name: Kraiwin Namsri
+ * UvAID: 15032094
+ *
+ * This program parses the value from stdin, and saves them in the set.
+ */
+
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -28,7 +34,7 @@ int main(void) {
     char *endptr;
     char *command;
     char *num_str;
-    int num;
+    int num = 0;
 
     command = strtok(buf, " ");     /* get command: +,-,?,p */
     if (strchr("+-?", *command)) {  /* operation with operand */
@@ -43,6 +49,7 @@ int main(void) {
         cleanup_and_fail(buf, s);
       }
     }
+
     switch (*command) {
       case '+':
         set_insert(s, num);
@@ -62,12 +69,12 @@ int main(void) {
         break;
     }
     
-    // int ret = set_verify(s);
-    // if (ret) { /* debug function */
-    //   fprintf(stderr, "Set implementation failed verification: %d!\n", ret);
-    // }
   }
 
+  int ret = set_verify(s);
+  if (ret) { /* debug function */
+    fprintf(stderr, "Set implementation failed verification: %d!\n", ret);
+  }
   free(buf);
   set_cleanup(s);
   return EXIT_SUCCESS;
